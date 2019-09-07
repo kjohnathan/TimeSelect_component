@@ -1,0 +1,56 @@
+.TimeDivsContainer {
+}
+
+.TimePeriodDiv {
+    width: 80%;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 10px auto 10px auto;
+    padding: 10px;
+
+    p {
+        display: inline-block;
+    }
+}
+
+.ReserveButton {
+    background-color: black;
+    color: white;
+    width: 70px;
+    float: right;
+    position: relative;
+    top: 8px;
+    outline: none;
+    font-size: 20px;
+}
+
+.CancelButton {
+    background-color: black;
+    color: white;
+    width: 50px;
+    float: right;
+    position: relative;
+    top: 8px;
+    outline: none;
+}
+
+.ButtonContainer {
+    padding: 0 auto 0 auto;
+    width: auto;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+
+    button {
+        display: inline-block;
+        margin: 0 auto 0 auto;
+        position: relative;
+        top: 20px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        font-size: 20px;
+        margin-bottom: 20px;
+        margin-right: 10px;
+    }
+}
