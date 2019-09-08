@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import classes from './App.module.scss';
+import { connect } from 'react-redux';
 
 import InfoPage from './components/InfoPage/InfoPage';
 import TeacherSelection from './container/TeacherSelection/TeacherSelection';
 import TimeSelectLayout from './Layout/TimeSelectLayout';
 import Confirmation from './components/Confirmation/Cofirmation';
+
+import * as actions from './store/action/actions';
 
 class App extends Component {
     state = {
@@ -17,89 +20,6 @@ class App extends Component {
         date: '',
         classTime: '',
         isConfirming: false
-    }
-    
-    onChangeHandler = (e, type) => {
-        const cloned_state = {...this.state};
-        cloned_state[type] = e.target.value;
-        console.log(cloned_state);
-        this.setState(cloned_state);
-    }
-
-    onSelectTeacherHandler = (teacherName) => {
-        const cloned_state = {...this.state};
-        
-        cloned_state.teacherName = teacherName;
-        console.log(cloned_state);
-        this.setState(cloned_state);
-    }
-
-    nextStep = (e) => {
-        e.preventDefault();
-        switch(this.state.step){
-            case 'info_page':
-                if (this.state.chineseName !== '' && this.state.engName !== ''){
-                    this.setState({
-                        step: 'teacher_select'
-                    })
-                } else {
-                    alert('請確實填寫資訊');
-                }
-            break;
-
-            case 'teacher_select':
-                if (this.state.teacherName !== ''){
-                    this.setState({
-                        step: 'time_select'
-                    })
-                } else {
-                    alert('請選取教練')
-                }
-            break;
-
-            case 'time_select':
-                if (this.state.classTime !== ''){
-                    this.setState({
-                        isConfirming: true
-                    })
-                } else {
-                    alert('請選取時段')
-                }
-
-            default:
-                return ;
-        }
-    }
-
-    prevStep = (e) => {
-        e.preventDefault();
-        switch(this.state.step){
-            case 'teacher_select':
-                this.setState({
-                    step: 'info_page'
-                })
-            break;
-
-            case 'time_select':
-                this.setState({
-                    step: 'teacher_select'
-                })
-            break;
-
-            default:
-                return ;
-        }
-    }
-
-    popConfirmModal = (e) => {
-        e.preventDefault();
-        if (this.state.classTime !== ''){
-            this.setState({
-                isConfirming: true
-            })
-        } else {
-            alert('請選擇時段');
-        }
     }
 
     confirmReservation = (e) => {
@@ -131,36 +51,37 @@ class App extends Component {
     }
 
     render(){
-        if (this.state.step === 'info_page'){
-            return (
-                <div className={classes.App}>
-                    <InfoPage 
-                        onChangeHandler={this.onChangeHandler.bind(this)}
-                        chineseName={this.state.chineseName}
-                        engName={this.state.engName}
-                        nextStep={this.nextStep.bind(this)}/>
-                </div>
-            );
-        } else if (this.state.step === 'teacher_select'){
-            return (
-                <div className={classes.App}>
-                    <TeacherSelection
-                        teacherName={this.state.teacherName}
-                        onSelectTeacherHandler={this.onSelectTeacherHandler.bind(this)}
-                        nextStep={this.nextStep.bind(this)}
-                        prevStep={this.prevStep.bind(this)}/>
-                </div>
-            )
-        } else if (this.state.step === 'time_select'){
+        console.log(this.props);
+        // if (this.props.step === 'info_page'){
+        //     return (
+        //         <div className={classes.App}>
+        //             <InfoPage 
+        //                 onChangeHandler={this.props.onChangeHandler}
+        //                 chineseName={this.props.chineseName}
+        //                 engName={this.props.engName}
+        //                 nextStep={this.props.nextStep}/>
+        //         </div>
+        //     );
+        // } else if (this.props.step === 'teacher_select'){
+        //     return (
+        //         <div className={classes.App}>
+        //             <TeacherSelection
+        //                 teacherName={this.props.teacherName}
+        //                 onSelectTeacherHandler={this.props.onSelectTeacherHandler}
+        //                 nextStep={this.props.nextStep}
+        //                 prevStep={this.props.prevStep}/>
+        //         </div>
+        //     )
+        // } else if (this.props.step === 'time_select'){
             return (
                 <div className={classes.App}>
                     <TimeSelectLayout 
-                        prevStep={this.prevStep.bind(this)}
-                        popConfirmModal={this.popConfirmModal.bind(this)}
-                        classTime={this.state.classTime}
+                        prevStep={this.props.prevStep}
+                        nextStep={this.props.nextStep}
+                        classTime={this.props.classTime}
                         onSelectClassTimeHandler={this.onSelectClassTimeHandler.bind(this)}
                         cancelClassTimeHandler={this.cancelClassTimeHandler.bind(this)}/>
-                    {this.state.isConfirming?
+                    {this.props.isConfirming?
                         <Confirmation 
                             teacherName={this.state.teacherName}
                             classTime={this.state.classTime}
@@ -168,16 +89,39 @@ class App extends Component {
                             cancelReservation={this.cancelReservation.bind(this)}/>: null}
                 </div>
             )
-        } else if (this.state.step === 'finished'){
-            return (
-                <div className={classes.App}>
-                    <div style={{ textAlign: 'center' }}>
-                        <h3>已完成預約！</h3>
-                    </div>
-                </div>
-            )
-        }
+    //     } else if (this.props.step === 'finished'){
+    //         return (
+    //             <div className={classes.App}>
+    //                 <div style={{ textAlign: 'center' }}>
+    //                     <h3>已完成預約！</h3>
+    //                 </div>
+    //             </div>
+    //         )
+    //     }
     }
 }
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        chineseName: state.chineseName,
+        engName: state.engName,
+        teacherName: state.teacherName,
+        step: state.step,
+        year: state.year,
+        month: state.month,
+        date: state.date,
+        classTime: state.classTime,
+        isConfirming: state.isConfirming
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onChangeHandler: (e, language_of_name) => dispatch(actions.onChangeHandler(e, language_of_name)),
+        onSelectTeacherHandler: (teacherName) => dispatch(actions.onSelectTeacherHandler(teacherName)),
+        nextStep: () => dispatch(actions.nextStep()),
+        prevStep: () => dispatch(actions.prevStep()),
+    }
+}
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(App);

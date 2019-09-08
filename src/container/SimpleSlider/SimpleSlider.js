@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
+import { connect } from 'react-redux';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 
@@ -11,9 +12,11 @@ import classes from './SimpleSlider.module.scss';
 
 class SimpleSlider extends Component {
     state = {
-        currentSlide: 0,
+        currentSlideIndex: 0,
         onSelectDate: '',
-        dateListArr: []
+        dateListArr: [],
+        newDateListArrLength: 0,
+        slickGoTo: 0
     }
 
     componentDidMount(){
@@ -47,92 +50,91 @@ class SimpleSlider extends Component {
     }
 
     componentDidUpdate(prevState){
-        const generate_new_date_list = ( dateListArr, onSelectDate) => {
-            const load_new_date = (dateListArr, onSelectDate) => {
-                const currentDateIndex = dateListArr.indexOf(onSelectDate);
-                console.log('componentDidUpdate', currentDateIndex);
-                if (dateListArr.length < currentDateIndex + 10){
-                    return (currentDateIndex + 5 - dateListArr.length);
-                } else {
-                    return false;
-                }
-            }
-            const determinator = load_new_date(dateListArr, onSelectDate);
+        console.log('componentDidUpdate, currentSlideIndex =', this.state.currentSlideIndex)
 
-            console.log(determinator);
-            
-            if (determinator){
-                const cloned_dateListArr = [...dateListArr];
-                const last_date = cloned_dateListArr[cloned_dateListArr.length - 1];
+        if ( this.state.currentSlideIndex + 20 > this.state.dateListArr.length){
+            const cloned_dateListArr = [...this.state.dateListArr];
+            const last_ele_in_dateListArr = cloned_dateListArr[cloned_dateListArr.length -1];
 
-                for (let i = 0; i < determinator; i++){
-                    const next_date = new Date(
-                        last_date.getFullYear(),
-                        last_date.getMonth(),
-                        last_date.getDate() + (i+1),
+            for (let i = 1; i <= 3; i++){
+                cloned_dateListArr.push(
+                    new Date(
+                        last_ele_in_dateListArr.getFullYear(),
+                        last_ele_in_dateListArr.getMonth(),
+                        last_ele_in_dateListArr.getDate() + i
                     )
-                    console.log(next_date);
-                    cloned_dateListArr.push(next_date)
-                }
-                this.setState({
-                    dateListArr: cloned_dateListArr
-                })
-            } else {
-                return false;
+                )
             }
-        }
 
-        generate_new_date_list( this.state.dateListArr, this.state.onSelectDate)
+            this.setState({
+                dateListArr: cloned_dateListArr
+            })
+        } else {
+            return ;
+        }
+    }
+
+    selectDateHandler = (date) => {
+        this.setState({
+            onSelectDate: date
+        })
     }
 
     render(){ 
         var settings = {
             accessibility: true,
             infinite: false,
-            centerMode: true,
-            speed: 500,
+            speed: 400,
             slidesToShow: 3,
-            slidesToScroll: 1,
+            slidesToScroll: 3,
+            swipe: false,
             adaptiveHeight: true,
             arrows: true,
-            focusOnSelect: true,
-            nextArrow: <CustomNextArrow />,
+            nextArrow: <CustomNextArrow />, 
             prevArrow: <CustomPrevArrow />,
-            afterChange: (e, current) => {
-                console.log(e);
+            afterChange: (currentIndex) => {
                 this.setState({
-                    onSelectDate: this.state.dateListArr[e]
+                    currentSlideIndex: currentIndex
                 })
             },
             resposive: [
                 {
                     breakpoint: 600,
                     settings: {
-                      slidesToShow: 1,
-                      slidesToScroll: 2,
+                      slidesToShow: 3,
+                      slidesToScroll: 3,
                       initialSlide: 2
                     }
                 }
-            ]
+            ],
+            slickGoTo: this.state.slickGoTo
         };
 
-        const innerSliders = this.state.dateListArr.map((ele) => {
+        const innerSliders = this.state.dateListArr.map((ele, index) => {
             return (
                 <CustomSlide 
                     dateObject={ele} 
-                    onSelectDate={this.state.onSelectDate}/>
+                    onSelectDate={this.state.onSelectDate}
+                    slideIndex={index}
+                    setCurrentIndex={
+                        this.slider.slickGoTo}
+                    selectDateHandler={this.selectDateHandler.bind(this)}/>
             )
         })
 
-        console.log(this.state.onSelectDate);
-
         return (
             <div className={classes.SliderContainer}>
-            <Slider {...settings} >
+            <Slider ref={ slider => (this.slider = slider)} {...settings} >
                 {innerSliders}
             </Slider>
             </div>
         )
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        
     }
 }
 

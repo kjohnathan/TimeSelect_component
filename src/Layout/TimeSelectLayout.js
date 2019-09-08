@@ -11,7 +11,7 @@ const timeSelectLayout = (props) => {
             <SimpleSlider />
             <TimeSelection 
                 prevStep={props.prevStep}
-                popConfirmModal={props.popConfirmModal}
+                nextStep={props.nextStep}
                 classTime={props.classTime}
                 onSelectClassTimeHandler={props.onSelectClassTimeHandler}
                 cancelClassTimeHandler={props.cancelClassTimeHandler}/>

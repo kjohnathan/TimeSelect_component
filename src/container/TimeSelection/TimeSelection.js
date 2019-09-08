@@ -58,7 +58,7 @@ class TimeSelection extends Component {
                         上一步
                     </button>
                     <button
-                        onClick={this.props.popConfirmModal}>
+                        onClick={this.props.nextStep}>
                         下一步
                     </button>
                 </div>

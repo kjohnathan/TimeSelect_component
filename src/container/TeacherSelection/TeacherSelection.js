@@ -55,16 +55,18 @@ class teachderSelection extends Component {
                 if (teacher.teacherName === this.props.teacherName){
                     teacherDivs.push(
                         <TeacherDiv
-                        imgSrc={teacher.imgSrc}
-                        teacherName={teacher.teacherName}
-                        teacherIntro={teacher.teacherIntro}
-                        onSelectTeacherHandler={this.props.onSelectTeacherHandler}
-                        selected={true}
+                            key={teacher.teacherName}
+                            imgSrc={teacher.imgSrc}
+                            teacherName={teacher.teacherName}
+                            teacherIntro={teacher.teacherIntro}
+                            onSelectTeacherHandler={this.props.onSelectTeacherHandler}
+                            selected={true}
                         />
                     )
                 } else {
                     teacherDivs.push(
                         <TeacherDiv
+                            key={teacher.teacherName}
                             imgSrc={teacher.imgSrc}
                             teacherName={teacher.teacherName}
                             teacherIntro={teacher.teacherIntro}
