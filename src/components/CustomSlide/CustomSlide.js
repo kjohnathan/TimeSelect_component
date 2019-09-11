@@ -42,7 +42,7 @@ const customSlide = (props) => {
                     console.log(props.slideIndex);
                     props.setCurrentIndex(props.slideIndex - 1)
                     props.selectDateHandler(props.dateObject)
-                }}>
+            }}>
                 <h4>
                     {
                         `${props.dateObject.getMonth()+1}` + '/' +

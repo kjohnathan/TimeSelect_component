@@ -72,7 +72,7 @@ class teachderSelection extends Component {
                             teacherIntro={teacher.teacherIntro}
                             onSelectTeacherHandler={this.props.onSelectTeacherHandler}
                             selected={false}
-                            />
+                        />
                     )
                 }
             })
@@ -80,14 +80,16 @@ class teachderSelection extends Component {
 
         return (
             <div className={classes.TeacherSelectionPage}>
-                <h3>請選擇老師</h3>
+                <div>
+                    <button
+                        className={classes.PrevStepButton}
+                        onClick={this.props.prevStep}>
+                        上一步
+                    </button>
+                    <h2>請選擇老師</h2>
+                    <div id={classes.spaceDiv}></div>
+                </div>
                 {teacherDivs}
-                <button
-                    className={classes.PrevStepButton}
-                    onClick={this.props.prevStep}>上一步</button>
-                <button
-                    className={classes.NextStepButton}
-                    onClick={this.props.nextStep}>下一步</button>
             </div>
         )
     }

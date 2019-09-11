@@ -1,5 +1,24 @@
 .timeSelectLayout {
     display: grid;
-    grid-template-rows: 75px auto;
+    grid-template-rows: 75px 75px auto;
     grid-template-columns: auto;
+    text-align: center;
+
+    h2 {
+        display: inline-block;
+    }
+
+    button {
+        position: static;
+        margin-right: 25px;
+    }
+}
+
+#spaceDiv {
+    display: inline-block;
+    margin: 0 auto 0 auto;
+    top: 20px;
+    width: 73.14px;
+    height: 35px;
+    margin-left: 20px;
 }

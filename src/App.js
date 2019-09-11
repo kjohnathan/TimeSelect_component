@@ -52,27 +52,27 @@ class App extends Component {
 
     render(){
         console.log(this.props);
-        // if (this.props.step === 'info_page'){
-        //     return (
-        //         <div className={classes.App}>
-        //             <InfoPage 
-        //                 onChangeHandler={this.props.onChangeHandler}
-        //                 chineseName={this.props.chineseName}
-        //                 engName={this.props.engName}
-        //                 nextStep={this.props.nextStep}/>
-        //         </div>
-        //     );
-        // } else if (this.props.step === 'teacher_select'){
-        //     return (
-        //         <div className={classes.App}>
-        //             <TeacherSelection
-        //                 teacherName={this.props.teacherName}
-        //                 onSelectTeacherHandler={this.props.onSelectTeacherHandler}
-        //                 nextStep={this.props.nextStep}
-        //                 prevStep={this.props.prevStep}/>
-        //         </div>
-        //     )
-        // } else if (this.props.step === 'time_select'){
+        if (this.props.step === 'info_page'){
+            return (
+                <div className={classes.App}>
+                    <InfoPage 
+                        onChangeHandler={this.props.onChangeHandler}
+                        chineseName={this.props.chineseName}
+                        engName={this.props.engName}
+                        nextStep={this.props.nextStep}/>
+                </div>
+            );
+        } else if (this.props.step === 'teacher_select'){
+            return (
+                <div className={classes.App}>
+                    <TeacherSelection
+                        teacherName={this.props.teacherName}
+                        onSelectTeacherHandler={this.props.onSelectTeacherHandler}
+                        nextStep={this.props.nextStep}
+                        prevStep={this.props.prevStep}/>
+                </div>
+            )
+        } else if (this.props.step === 'time_select'){
             return (
                 <div className={classes.App}>
                     <TimeSelectLayout 
@@ -89,15 +89,15 @@ class App extends Component {
                             cancelReservation={this.cancelReservation.bind(this)}/>: null}
                 </div>
             )
-    //     } else if (this.props.step === 'finished'){
-    //         return (
-    //             <div className={classes.App}>
-    //                 <div style={{ textAlign: 'center' }}>
-    //                     <h3>已完成預約！</h3>
-    //                 </div>
-    //             </div>
-    //         )
-    //     }
+        } else if (this.props.step === 'finished'){
+            return (
+                <div className={classes.App}>
+                    <div style={{ textAlign: 'center' }}>
+                        <h3>已完成預約！</h3>
+                    </div>
+                </div>
+            )
+        }
     }
 }
 

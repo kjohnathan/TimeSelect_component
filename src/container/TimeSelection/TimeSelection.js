@@ -40,7 +40,7 @@ class TimeSelection extends Component {
                     <div className={classes.TimePeriodDiv}>
                         <p>按摩師傅: {ele}</p>
                         <button 
-                            className={classes.ReserveButton}
+                            id={classes.ReserveButton}
                             onClick={(e) => this.onClickHandler(e, ele)}>
                             預約
                         </button>
@@ -52,16 +52,6 @@ class TimeSelection extends Component {
         return (
             <div className={classes.TimeDivsContainer}>
                 {timePeridDivs}
-                <div className={classes.ButtonContainer}>
-                    <button
-                        onClick={this.props.prevStep}>
-                        上一步
-                    </button>
-                    <button
-                        onClick={this.props.nextStep}>
-                        下一步
-                    </button>
-                </div>
             </div>
         )
     }

@@ -27,3 +27,21 @@ export const prevStep = () => {
         type: actionTypes.PREV_STEP
     }
 }
+
+export const setInitialState = (currentDate) => {
+    return {
+        type: actionTypes.SET_INITIAL_DATE,
+        year: currentDate.getFullYear(),
+        month: currentDate.getMonth() + 1,
+        date: currentDate.getDate()
+    }
+}
+
+export const selectTime = (seletedDate) => {
+    return {
+        type: actionTypes.SELECT_TIME,
+        year: seletedDate.getFullYear(),
+        month: seletedDate.getMonth() + 1,
+        date: seletedDate.getDate()
+    }
+}

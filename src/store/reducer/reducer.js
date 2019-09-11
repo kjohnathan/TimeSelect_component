@@ -15,10 +15,6 @@ const initialState = {
 const reducer = ( state = initialState , action ) => {
     switch(action.type){
         case actionTypes.CHANGE_NAME:
-            console.log(action.updatedValue);
-            console.log(action.language_of_name);
-            console.log(action.type);
-            console.log(action.event);
             if (action.language_of_name === 'chineseName'){
                 return {
                     ...state,
@@ -37,45 +33,20 @@ const reducer = ( state = initialState , action ) => {
         case actionTypes.SELECT_TEACHER:
             return {
                 ...state,
-                teacherName: action.teacherName
+                teacherName: action.teacherName,
+                step: 'time_select'
             }
         break;
 
         case actionTypes.NEXT_STEP:
-            if (state.step === 'info_page'){
-                if (state.chineseName !== '' && state.engName !== ''){
-                    return {
-                        ...state,
-                        step: 'teacher_select'
-                    }
-                } else {
-                    console.log('請確實填寫姓名');
-                    alert('請確實填寫資訊!!');
-                    return state;
-                }
-
-            } else if (state.step === 'teacher_select'){
-                if (state.teacherName !== ''){
-                    return {
-                        ...state,
-                        step: 'time_select'
-                    }
-                } else {
-                    alert('請選取教練');
-                    return state;
-                }
-            } else if (state.step === 'time_select'){
-                if (state.classTime !== ''){
-                    console.log('要確認');
-                    return {
-                        ...state,
-                        isConfirming: true
-                    }
-                } else {
-                    alert('請選取時段');
-                    return state;
+            if (state.chineseName !== '' && state.engName !== ''){
+                return {
+                    ...state,
+                    step: 'teacher_select'
                 }
             } else {
+                console.log('請確實填寫姓名');
+                alert('請確實填寫資訊!!');
                 return state;
             }
 
@@ -96,6 +67,21 @@ const reducer = ( state = initialState , action ) => {
                 return state;
             }
         break;
+
+        case actionTypes.SET_INITIAL_DATE:
+            return {
+                ...state,
+                year: action.year,
+                month: action.month,
+                date: action.date
+            }
+        break;
+
+        case actionTypes.SELECT_TIME:
+            return {
+                ...state,
+                
+            }
 
         default:
             return state;

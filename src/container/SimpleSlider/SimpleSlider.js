@@ -8,6 +8,8 @@ import CustomNextArrow from '../../components/customArrows/CustomNextArrow';
 import CustomPrevArrow from '../../components/customArrows/CustomPrevArrow';
 import CustomSlide from '../../components/CustomSlide/CustomSlide';
 
+import * as actions from '../../store/action/actions';
+
 import classes from './SimpleSlider.module.scss';
 
 class SimpleSlider extends Component {
@@ -16,7 +18,6 @@ class SimpleSlider extends Component {
         onSelectDate: '',
         dateListArr: [],
         newDateListArrLength: 0,
-        slickGoTo: 0
     }
 
     componentDidMount(){
@@ -47,6 +48,7 @@ class SimpleSlider extends Component {
 
         generat_date_list(generated_date_list, currentDateObject);
         console.log(generated_date_list);
+        console.log(this.state.currentSlideIndex);
     }
 
     componentDidUpdate(prevState){
@@ -80,11 +82,11 @@ class SimpleSlider extends Component {
         })
     }
 
-    render(){ 
+    render(){
         var settings = {
             accessibility: true,
             infinite: false,
-            speed: 400,
+            speed: 300,
             slidesToShow: 3,
             slidesToScroll: 3,
             swipe: false,
@@ -93,17 +95,18 @@ class SimpleSlider extends Component {
             nextArrow: <CustomNextArrow />, 
             prevArrow: <CustomPrevArrow />,
             afterChange: (currentIndex) => {
+                console.log(currentIndex);
                 this.setState({
                     currentSlideIndex: currentIndex
                 })
             },
-            resposive: [
+            responsive: [
                 {
                     breakpoint: 600,
                     settings: {
                       slidesToShow: 3,
                       slidesToScroll: 3,
-                      initialSlide: 2
+                      initialSlide: 0
                     }
                 }
             ],
@@ -112,22 +115,23 @@ class SimpleSlider extends Component {
 
         const innerSliders = this.state.dateListArr.map((ele, index) => {
             return (
-                <CustomSlide 
+                <CustomSlide
+                    key={'sliderIndex' + index}
                     dateObject={ele} 
                     onSelectDate={this.state.onSelectDate}
                     slideIndex={index}
                     setCurrentIndex={
                         this.slider.slickGoTo}
-                    selectDateHandler={this.selectDateHandler.bind(this)}/>
+                        onSelectTimeHandler={this.props.onSelectTimeHandler}/>
             )
         })
 
         return (
             <div className={classes.SliderContainer}>
-            <Slider ref={ slider => (this.slider = slider)} {...settings} >
-                {innerSliders}
-            </Slider>
-            </div>
+                <Slider ref={ slider => (this.slider = slider)} {...settings} >
+                    {innerSliders}
+                </Slider>
+            </div>                
         )
     }
 }
@@ -138,4 +142,11 @@ const mapStateToProps = state => {
     }
 }
 
-export default SimpleSlider;
+const mapDispatchToProps = dispatch => {
+    return {
+        setInitialDate: (currentDate) => dispatch(actions.setInitialState(currentDate)),
+        onSelectTimeHandler: (selectedDate) => dispatch(actions.selectTime(selectedDate))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SimpleSlider);

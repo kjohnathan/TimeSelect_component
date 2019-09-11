@@ -1,4 +1,14 @@
 .ArrowContainer {
     display: inline-block;
-    margin-top: 18px;
+    margin-top: 20px;
+}
+
+.prevArrow {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-top: 4px solid #000;
+    border-right: 4px solid #000;
+    transform: rotate(-135deg);
+    margin-left: 10px;
 }

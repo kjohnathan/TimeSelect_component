@@ -14,7 +14,7 @@
     }
 }
 
-.ReserveButton {
+#ReserveButton {
     background-color: black;
     color: white;
     width: 70px;
@@ -41,16 +41,4 @@
     margin-right: auto;
     margin-left: auto;
     text-align: center;
-
-    button {
-        display: inline-block;
-        margin: 0 auto 0 auto;
-        position: relative;
-        top: 20px;
-        border: 1px solid #ccc;
-        padding: 5px;
-        font-size: 20px;
-        margin-bottom: 20px;
-        margin-right: 10px;
-    }
 }

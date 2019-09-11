@@ -1,4 +1,26 @@
 .TeacherSelectionPage {
     width: 100%;
     text-align: center;
+
+    h2 {
+        display: inline-block;
+    }
+
+    button {
+        position: static;
+        margin-right: 25px;
+    }
+}
+
+#spaceDiv {
+    display: inline-block;
+    margin: 0 auto 0 auto;
+    top: 20px;
+    width: 73.14px;
+    height: 35px;
+    margin-left: 20px;
+}
+
+.PrevStepButton {
+    display: inline-block;
 }
