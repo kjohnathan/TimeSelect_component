@@ -22,6 +22,7 @@ const customSlide = (props) => {
                 onClick={() => {
                     console.log(props.dateObject)
                     console.log(props.slideIndex);
+                    props.selectDateHandler(props.dateObject);
                     props.setCurrentIndex(props.slideIndex - 1)
                 }}>
                 <h4>
@@ -40,8 +41,8 @@ const customSlide = (props) => {
                 onClick={() => {
                     console.log(props.dateObject);
                     console.log(props.slideIndex);
+                    props.selectDateHandler(props.dateObject);
                     props.setCurrentIndex(props.slideIndex - 1)
-                    props.selectDateHandler(props.dateObject)
             }}>
                 <h4>
                     {

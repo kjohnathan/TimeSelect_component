@@ -7,7 +7,7 @@ const teacherDiv = (props) => {
         return (
             <div 
                 className={classes.TeacherDiv}
-                onClick={() => props.onSelectTeacherHandler(props.teacherName)}>
+                onClick={() => props.onSelectMasterGroup(props.masterGid)}>
                 <img className={classes.TeacherImg} src={props.imgSrc} />
                 <div className={classes.SelectedTeacherInfo}>
                     <h2>{props.teacherName}</h2>
@@ -19,7 +19,7 @@ const teacherDiv = (props) => {
         return (
             <div 
                 className={classes.TeacherDiv}
-                onClick={() => props.onSelectTeacherHandler(props.teacherName)}>
+                onClick={() => props.onSelectMasterGroup(props.masterGid)}>
                 <img className={classes.TeacherImg} src={props.imgSrc} />
                 <div className={classes.TeacherInfo}>
                     <h2>{props.teacherName}</h2>

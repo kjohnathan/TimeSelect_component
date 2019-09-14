@@ -9,10 +9,10 @@ export const onChangeHandler = (e, language_of_name) => {
     }
 }
 
-export const onSelectTeacherHandler = (teacherName) => {
+export const onSelectMasterGroup = (masterGid) => {
     return {
-        type: actionTypes.SELECT_TEACHER,
-        teacherName: teacherName
+        type: actionTypes.SELECT_MASTER_GROUP,
+        masterGid: masterGid
     }
 }
 
@@ -28,20 +28,16 @@ export const prevStep = () => {
     }
 }
 
-export const setInitialState = (currentDate) => {
+export const setDateTimeString = (datetime_string) => {
     return {
-        type: actionTypes.SET_INITIAL_DATE,
-        year: currentDate.getFullYear(),
-        month: currentDate.getMonth() + 1,
-        date: currentDate.getDate()
+        type: actionTypes.SET_DATE_TIME_STRING,
+        datetime_string: datetime_string
     }
 }
 
-export const selectTime = (seletedDate) => {
+export const setSelectedDate_timeList = (timeList) => {
     return {
-        type: actionTypes.SELECT_TIME,
-        year: seletedDate.getFullYear(),
-        month: seletedDate.getMonth() + 1,
-        date: seletedDate.getDate()
+        type: actionTypes.SET_SELECTED_DATE_TIME_LIST,
+        timeList: timeList
     }
 }

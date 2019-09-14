@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
-import { connect } from 'react-redux';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 
@@ -12,12 +11,15 @@ import * as actions from '../../store/action/actions';
 
 import classes from './SimpleSlider.module.scss';
 
+import { masterGrpList } from './masterGrp/index';
+
 class SimpleSlider extends Component {
     state = {
         currentSlideIndex: 0,
         onSelectDate: '',
         dateListArr: [],
         newDateListArrLength: 0,
+        dateTimeList: null
     }
 
     componentDidMount(){
@@ -47,12 +49,39 @@ class SimpleSlider extends Component {
         }
 
         generat_date_list(generated_date_list, currentDateObject);
-        console.log(generated_date_list);
-        console.log(this.state.currentSlideIndex);
+
+        console.log(masterGrpList[this.props.masterGid - 1]);
+        const intializeTimeList = () => {
+            const year_string = `${currentDateObject.getFullYear()}`;
+            const month_string = (
+                currentDateObject.getMonth() + 1> 10?
+                `${currentDateObject.getMonth() + 1}`: '0' + `${currentDateObject.getMonth() + 1}`
+            )
+            const date_string = (
+                currentDateObject.getDate() > 10?
+                `${currentDateObject.getDate()}`: '0' + `${currentDateObject.getDate()}`
+            )
+
+            const datetime_string = year_string + month_string + date_string;
+            const onSelectDateTime = masterGrpList[this.props.masterGid-1].datetime.find((date) => {
+                return date.date === datetime_string;
+            })
+            console.log(onSelectDateTime);
+
+            if(onSelectDateTime){
+                return onSelectDateTime.time_list;
+            } else {
+                return null;
+            }
+        }
+
+        console.log(intializeTimeList());
+        this.props.setSelectedDate_timeList(intializeTimeList());
     }
 
     componentDidUpdate(prevState){
         console.log('componentDidUpdate, currentSlideIndex =', this.state.currentSlideIndex)
+        console.log('componentDidUPdate', this.state.onSelectDate);
 
         if ( this.state.currentSlideIndex + 20 > this.state.dateListArr.length){
             const cloned_dateListArr = [...this.state.dateListArr];
@@ -76,10 +105,40 @@ class SimpleSlider extends Component {
         }
     }
 
-    selectDateHandler = (date) => {
+    selectDateHandler = (seletedDate) => {
         this.setState({
-            onSelectDate: date
+            onSelectDate: seletedDate
         })
+        
+        this.props.setDateTimeString(seletedDate);
+
+        const intializeTimeList = () => {
+            const year_string = `${seletedDate.getFullYear()}`;
+            const month_string = (
+                seletedDate.getMonth() + 1> 10?
+                `${seletedDate.getMonth() + 1}`: '0' + `${seletedDate.getMonth() + 1}`
+            )
+            const date_string = (
+                seletedDate.getDate() > 10?
+                `${seletedDate.getDate()}`: '0' + `${seletedDate.getDate()}`
+            )
+
+            const datetime_string = year_string + month_string + date_string;
+            const onSelectDateTime = masterGrpList[this.props.masterGid-1].datetime.find((date) => {
+                console.log(date.date);
+                console.log(date_string);
+                return date.date === datetime_string;
+            })
+            console.log(onSelectDateTime);
+
+            if(onSelectDateTime){
+                this.props.setSelectedDate_timeList(onSelectDateTime.time_list)
+            } else {
+                this.props.setSelectedDate_timeList('no free time');
+            }
+        }
+
+        intializeTimeList();
     }
 
     render(){
@@ -120,9 +179,9 @@ class SimpleSlider extends Component {
                     dateObject={ele} 
                     onSelectDate={this.state.onSelectDate}
                     slideIndex={index}
-                    setCurrentIndex={
-                        this.slider.slickGoTo}
-                        onSelectTimeHandler={this.props.onSelectTimeHandler}/>
+                    selectDateHandler={this.selectDateHandler}
+                    setCurrentIndex={this.slider.slickGoTo}
+                    onSelectTimeHandler={this.props.onSelectTimeHandler}/>
             )
         })
 
@@ -136,17 +195,4 @@ class SimpleSlider extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        setInitialDate: (currentDate) => dispatch(actions.setInitialState(currentDate)),
-        onSelectTimeHandler: (selectedDate) => dispatch(actions.selectTime(selectedDate))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SimpleSlider);
+export default SimpleSlider;

@@ -9,6 +9,7 @@ class TimeSelection extends Component {
 
     componentDidMount(){
         console.log('TimeSelection, componentDidMount');
+
     }
 
     onClickHandler = (e, number) => {
@@ -22,36 +23,37 @@ class TimeSelection extends Component {
     render(){
         const timePeriodArr = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         console.log('timeSelection', this.props.classTime);
+        console.log(this.props.selectedDate_timeList);
 
-        const timePeridDivs = timePeriodArr.map((ele, index) => {
-            if (index === this.props.classTime - 1 && this.props.classTime !== ''){
-                return (
+        let timePeriodDivs = [];
+
+        if(this.props.selectedDate_timeList !== 'no free time' && this.props.selectedDate_timeList){
+            this.props.selectedDate_timeList.map((time) => {
+                timePeriodDivs.push(
                     <div className={classes.TimePeriodDiv}>
-                        <p>按摩師傅: {ele}</p>
-                        <button 
-                            className={classes.ReserveButton}
-                            onClick={(e) => this.onClickHandler(e)}>
-                            取消
-                        </button>
-                    </div>
-                )
-            } else {
-                return (
-                    <div className={classes.TimePeriodDiv}>
-                        <p>按摩師傅: {ele}</p>
+                        <div className={classes.InfoDiv}>
+                            <p>師傅:{time.master_id}</p>
+                            <p>時間: {time.time}</p>
+                        </div>
                         <button 
                             id={classes.ReserveButton}
-                            onClick={(e) => this.onClickHandler(e, ele)}>
+                            onClick={() => this.props.makeReservation(null, time.master_id)}>
                             預約
                         </button>
                     </div>
                 )
-            }
-        })
+            })
+        } else {
+            timePeriodDivs = [
+                <div>
+                    <h3>此天無可預約時段</h3>
+                </div>
+            ]
+        }
 
         return (
             <div className={classes.TimeDivsContainer}>
-                {timePeridDivs}
+                {timePeriodDivs}
             </div>
         )
     }

@@ -3,13 +3,11 @@ import * as actionTypes from '../action/actionTypes';
 const initialState = {
     chineseName: '',
     engName: '',
-    teacherName: '',
+    masterId: '',
+    masterGid: null,
     step: 'info_page',
-    year: '',
-    month: '',
-    date: '',
-    classTime: '',
-    isConfirming: false
+    selectedDate_timeList: null,
+    datetime_string: null
 }
 
 const reducer = ( state = initialState , action ) => {
@@ -30,25 +28,33 @@ const reducer = ( state = initialState , action ) => {
             }
         break;
         
-        case actionTypes.SELECT_TEACHER:
+        case actionTypes.SELECT_MASTER_GROUP:
             return {
                 ...state,
-                teacherName: action.teacherName,
+                masterGid: action.masterGid,
                 step: 'time_select'
             }
         break;
 
         case actionTypes.NEXT_STEP:
-            if (state.chineseName !== '' && state.engName !== ''){
-                return {
-                    ...state,
-                    step: 'teacher_select'
+            if (state.step === 'info_page'){
+                if (state.chineseName !== '' && state.engName !== ''){
+                    return {
+                        ...state,
+                        step: 'teacher_select'
+                    }
+                } else {
+                    console.log('請確實填寫姓名');
+                    alert('請確實填寫資訊!!');
+                    return state;
                 }
             } else {
-                console.log('請確實填寫姓名');
-                alert('請確實填寫資訊!!');
-                return state;
+                return {
+                    ...state,
+                    step: 'finished'
+                }
             }
+
 
         case actionTypes.PREV_STEP:
             if (state.step === 'teacher_select'){
@@ -76,6 +82,18 @@ const reducer = ( state = initialState , action ) => {
                 date: action.date
             }
         break;
+
+        case actionTypes.SET_DATE_TIME_STRING:
+            return {
+                ...state,
+                datetime_string: action.datetime_string
+            }
+
+        case actionTypes.SET_SELECTED_DATE_TIME_LIST:
+            return {
+                ...state,
+                selectedDate_timeList: action.timeList
+            }
 
         case actionTypes.SELECT_TIME:
             return {

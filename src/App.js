@@ -13,41 +13,20 @@ class App extends Component {
     state = {
         chineseName: '',
         engName: '',
-        teacherName: '',
+        masterId: '',
         step: 'info_page',
-        year: '',
-        month: '',
-        date: '',
-        classTime: '',
-        isConfirming: false
+        datetime_string: '',
+        isConfirming: false,
+        selectedDate_timeList: null
     }
 
-    confirmReservation = (e) => {
-        e.preventDefault();
+    makeReservation = (dateTimeString, masterId) => {
         this.setState({
-            step: 'finished'
+            datetime_string: dateTimeString,
+            masterId: masterId
         })
-    }
 
-    cancelReservation = (e) => {
-        e.preventDefault();
-        this.setState({
-            isConfirming: false,
-        })
-    }
-
-    onSelectClassTimeHandler = (e, classTime) => {
-        e.preventDefault();
-        this.setState({
-            classTime
-        })
-    }
-
-    cancelClassTimeHandler = (e) => {
-        e.preventDefault();
-        this.setState({
-            classTime: ''
-        })
+        this.props.nextStep();
     }
 
     render(){
@@ -66,8 +45,8 @@ class App extends Component {
             return (
                 <div className={classes.App}>
                     <TeacherSelection
-                        teacherName={this.props.teacherName}
-                        onSelectTeacherHandler={this.props.onSelectTeacherHandler}
+                        masterGid={this.props.masterGid}
+                        onSelectMasterGroup={this.props.onSelectMasterGroup}
                         nextStep={this.props.nextStep}
                         prevStep={this.props.prevStep}/>
                 </div>
@@ -75,25 +54,28 @@ class App extends Component {
         } else if (this.props.step === 'time_select'){
             return (
                 <div className={classes.App}>
-                    <TimeSelectLayout 
+                    <TimeSelectLayout
                         prevStep={this.props.prevStep}
-                        nextStep={this.props.nextStep}
-                        classTime={this.props.classTime}
-                        onSelectClassTimeHandler={this.onSelectClassTimeHandler.bind(this)}
-                        cancelClassTimeHandler={this.cancelClassTimeHandler.bind(this)}/>
-                    {this.props.isConfirming?
-                        <Confirmation 
-                            teacherName={this.state.teacherName}
-                            classTime={this.state.classTime}
-                            confirmReservation={this.confirmReservation.bind(this)}
-                            cancelReservation={this.cancelReservation.bind(this)}/>: null}
+                        masterGid={this.props.masterGid}
+                        datetime_string={this.props.datetime_string}
+                        setDateTimeString={this.props.setDateTimeString}
+                        selectedDate_timeList={this.props.selectedDate_timeList}
+                        setSelectedDate_timeList={this.props.setSelectedDate_timeList}
+                        makeReservation={this.makeReservation}/>
                 </div>
             )
         } else if (this.props.step === 'finished'){
+            console.log(this.props.datetime_string);
             return (
                 <div className={classes.App}>
                     <div style={{ textAlign: 'center' }}>
                         <h3>已完成預約！</h3>
+                        <p>姓名：{this.props.chineseName}</p>
+                        <p>師傅：{this.state.masterId}</p>
+                        <p>時間：{this.props.datetime_string.getFullYear()}年
+                                {this.props.datetime_string.getMonth()+1}月
+                                {this.props.datetime_string.getDate()}日
+                        </p>
                     </div>
                 </div>
             )
@@ -105,22 +87,21 @@ const mapStateToProps = state => {
     return {
         chineseName: state.chineseName,
         engName: state.engName,
-        teacherName: state.teacherName,
+        masterGid: state.masterGid,
         step: state.step,
-        year: state.year,
-        month: state.month,
-        date: state.date,
-        classTime: state.classTime,
-        isConfirming: state.isConfirming
+        selectedDate_timeList: state.selectedDate_timeList,
+        datetime_string: state.datetime_string
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onChangeHandler: (e, language_of_name) => dispatch(actions.onChangeHandler(e, language_of_name)),
-        onSelectTeacherHandler: (teacherName) => dispatch(actions.onSelectTeacherHandler(teacherName)),
+        onSelectMasterGroup: (teacherName) => dispatch(actions.onSelectMasterGroup(teacherName)),
         nextStep: () => dispatch(actions.nextStep()),
         prevStep: () => dispatch(actions.prevStep()),
+        setDateTimeString: (datetimestring) => dispatch(actions.setDateTimeString(datetimestring)),
+        setSelectedDate_timeList: (timeList) => dispatch(actions.setSelectedDate_timeList(timeList)),
     }
 }
  

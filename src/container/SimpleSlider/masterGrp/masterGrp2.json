@@ -1,0 +1,44 @@
+{
+    "datetime": [
+        {
+            "date": "20190920",
+            "time_list": [
+                {
+                    "master_id": "B001",
+                    "master_name": "B001",
+                    "time": "1000"
+                },
+                {
+                    "master_id": "B001",
+                    "master_name": "B001",
+                    "time": "1100"
+                },
+                {
+                    "master_id": "B002",
+                    "master_name": "B002",
+                    "time": "1100"
+                }
+            ]
+        },
+        {
+            "date": "20190921",
+            "time_list": [
+                {
+                    "master_id": "B003",
+                    "master_name": "B003",
+                    "time": "1100"
+                },
+                {
+                    "master_id": "B001",
+                    "master_name": "B001",
+                    "time": "1200"
+                },
+                {
+                    "master_id": "A002",
+                    "master_name": "B002",
+                    "time": "1200"
+                }
+            ]
+        }
+    ]
+}

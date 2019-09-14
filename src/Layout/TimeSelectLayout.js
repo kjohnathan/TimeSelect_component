@@ -14,11 +14,16 @@ const timeSelectLayout = (props) => {
                 <h2>請選擇時間</h2>
                 <div id={classes.spaceDiv}></div>
             </div>
-            <SimpleSlider />
+            <SimpleSlider 
+                setDateTimeString={props.setDateTimeString}
+                setSeletedDateTimeListHandler={props.setSeletedDateTimeListHandler}
+                masterGid={props.masterGid}
+                setSelectedDate_timeList={props.setSelectedDate_timeList}/>
             <TimeSelection 
-                classTime={props.classTime}
+                datetime_string={props.datetime_string}
+                selectedDate_timeList={props.selectedDate_timeList}
                 onSelectClassTimeHandler={props.onSelectClassTimeHandler}
-                cancelClassTimeHandler={props.cancelClassTimeHandler}/>
+                makeReservation={props.makeReservation}/>
         </div>
     )
 }
