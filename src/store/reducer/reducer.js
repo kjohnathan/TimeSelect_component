@@ -2,7 +2,7 @@ import * as actionTypes from '../action/actionTypes';
 
 const initialState = {
     chineseName: '',
-    engName: '',
+    phoneNumber: null,
     masterId: '',
     masterGid: null,
     step: 'info_page',
@@ -18,12 +18,13 @@ const reducer = ( state = initialState , action ) => {
                     ...state,
                     chineseName: action.updatedValue
                 }
-            } else if (action.language_of_name === 'engName'){
+            } else if (action.language_of_name === 'phoneNumber'){
                 return {
                     ...state,
-                    engName: action.updatedValue
+                    phoneNumber: action.updatedValue
                 }
-            } else {
+            } 
+            else {
                 return state;
             }
         break;

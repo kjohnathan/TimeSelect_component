@@ -86,7 +86,7 @@ class App extends Component {
 const mapStateToProps = state => {
     return {
         chineseName: state.chineseName,
-        engName: state.engName,
+        phoneNumber: state.phoneNumber,
         masterGid: state.masterGid,
         step: state.step,
         selectedDate_timeList: state.selectedDate_timeList,

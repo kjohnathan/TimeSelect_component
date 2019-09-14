@@ -26,6 +26,8 @@ class SimpleSlider extends Component {
         console.log('SimpleSlider', 'componentDidMount');
         const currentDateObject = new Date();
 
+        this.props.setDateTimeString(currentDateObject);
+
         const generated_date_list = [];
 
         const generat_date_list = (generated_date_list, currentDateObject) => {
@@ -142,6 +144,7 @@ class SimpleSlider extends Component {
     }
 
     render(){
+        console.log(this.state.onSelectDateTime);
         var settings = {
             accessibility: true,
             infinite: false,

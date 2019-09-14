@@ -9,31 +9,32 @@ const infoPage = (props) => {
             <p>※ 不可為匿名使用 <span>(必填)</span></p>
             <form className={classes.InfoForm}>
                 <label>
-                    中文名字
+                    姓名
                 </label>
                 <input
                     autoComplete='off'
                     required
-                    placeholder='請輸入您的中文名字'
+                    placeholder='請輸入您的姓名'
                     value={props.chineseName}
                     name='chineseName'
                     className={classes.InfoInput}
                     onChange={(e) => props.onChangeHandler(e, 'chineseName')}/>
                 <label>
-                    英文名字
+                    手機號碼
                 </label>
                 <input
                     autoComplete='off'
                     required
-                    placeholder='請輸入您的英文名字' 
-                    value={props.engName}
-                    name='engName'
+                    placeholder='請輸入您的手機號碼'
+                    value={props.phoneNumber}
+                    name='phoneNumber'
                     className={classes.InfoInput}
-                    onChange={(e) => props.onChangeHandler(e, 'engName')}/>
+                    onChange={(e) => props.onChangeHandler(e, 'phoneNumber')}/>
                 <button
                     onClick={props.nextStep}>
                     下一步
                 </button>
+
             </form>
 
         </div>
