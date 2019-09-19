@@ -1,5 +1,13 @@
 import * as actionTypes from './actionTypes';
 
+export const setInfoContent = (infoType, updatedValue) => {
+    return {
+        type: actionTypes.SET_INFO_CONTENT,
+        infoType: infoType,
+        updatedValue: updatedValue
+    }
+}
+
 export const onChangeHandler = (e, language_of_name) => {
     return {
         type: actionTypes.CHANGE_NAME,
@@ -39,5 +47,12 @@ export const setSelectedDate_timeList = (timeList) => {
     return {
         type: actionTypes.SET_SELECTED_DATE_TIME_LIST,
         timeList: timeList
+    }
+}
+
+export const setErrorMsg = ( errMsg ) => {
+    return {
+        type: actionTypes.SET_ERROR_MSG,
+        errMsg: errMsg
     }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import TeacherDiv from '../../components/TeacherDiv/TeacherDiv';
+import Loading from '../../UI/Loading/Loading';
 
 import classes from './TeacherSelection.module.scss';
 
@@ -10,30 +11,35 @@ class teachderSelection extends Component {
     }
 
     state = {
-        teachersList: []
+        teachersList: [],
+        isLoading: false
     }
 
     componentDidMount(){
-        fetch('http://hsintian.tk:8000/api/group/get/', {
+        this.setState({ isLoading: true });
+        fetch('https://hsintian.tk/api/group/get/ ', {
             method: 'GET',
-            header: {
-                'Content-Type': 'application/json',
-                'mode': 'cors'
+            headers: {
+                'Content-Type': 'application/json'
             }
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            console.log(data.info);
             this.setState({
-            teachersList: data.infos
+            teachersList: data.infos,
+            isLoading: false
         })})
         .catch(err => console.log(err));
+
+        console.log('mounted');
     }
 
     render(){
         let teacherDivs = [];
         console.log(this.props);
         console.log(this.state);
+    
         if (this.state.teachersList.length !== 0){
             this.state.teachersList.forEach((masterGrp, index) => {
                 // if (teacher.masterGid === this.props.masterGid){
@@ -75,7 +81,10 @@ class teachderSelection extends Component {
                     <h2>請選擇老師</h2>
                     <div id={classes.spaceDiv}></div>
                 </div>
-                {teacherDivs}
+                {this.state.isLoading?
+                    <Loading />: 
+                    teacherDivs
+                }
             </div>
         )
     }

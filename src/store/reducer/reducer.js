@@ -2,16 +2,27 @@ import * as actionTypes from '../action/actionTypes';
 
 const initialState = {
     chineseName: '',
-    phoneNumber: null,
+    phoneNumber: '',
     masterId: '',
     masterGid: null,
     step: 'info_page',
     selectedDate_timeList: null,
-    datetime_string: null
+    datetime_string: null,
+    line_id: null,
+    line_data_status: null,
+    errMsg: null
 }
 
 const reducer = ( state = initialState , action ) => {
     switch(action.type){
+        case actionTypes.SET_INFO_CONTENT: 
+            console.log(action.infoType);
+            console.log(action.updatedValue);
+            const cloned_state = { ... state };
+            cloned_state[action.infoType] = action.updatedValue;
+            console.log(cloned_state);
+            return cloned_state;
+
         case actionTypes.CHANGE_NAME:
             if (action.language_of_name === 'chineseName'){
                 return {
@@ -96,10 +107,10 @@ const reducer = ( state = initialState , action ) => {
                 selectedDate_timeList: action.timeList
             }
 
-        case actionTypes.SELECT_TIME:
+        case actionTypes.SET_ERROR_MSG: 
             return {
                 ...state,
-                
+                errMsg: action.errMsg
             }
 
         default:

@@ -22,7 +22,7 @@ const teacherDiv = (props) => {
                 onClick={() => props.onSelectMasterGroup(props.masterGid)}>
                 <img className={classes.TeacherImg} src={props.imgSrc} alt={`${props.imgSrc}`}/>
                 <div className={classes.TeacherInfo}>
-                    <h2>{props.teacherName}</h2>
+                    <h2>{props.groupName}</h2>
                     <p>{props.teacherIntro}</p>
                 </div>
             </div>

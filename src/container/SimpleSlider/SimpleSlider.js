@@ -11,15 +11,14 @@ import * as actions from '../../store/action/actions';
 
 import classes from './SimpleSlider.module.scss';
 
-import { masterGrpList } from './masterGrp/index';
-
 class SimpleSlider extends Component {
     state = {
         currentSlideIndex: 0,
         onSelectDate: '',
         dateListArr: [],
         newDateListArrLength: 0,
-        dateTimeList: null
+        dateTimeList: null,
+        selectedGrp_datetime: null,
     }
 
     componentDidMount(){
@@ -52,8 +51,8 @@ class SimpleSlider extends Component {
 
         generat_date_list(generated_date_list, currentDateObject);
 
-        console.log(masterGrpList[this.props.masterGid - 1]);
-        const intializeTimeList = () => {
+        const intializeTimeList = (datetime_list) => {
+            console.log(datetime_list);
             const year_string = `${currentDateObject.getFullYear()}`;
             const month_string = (
                 currentDateObject.getMonth() + 1> 10?
@@ -65,7 +64,7 @@ class SimpleSlider extends Component {
             )
 
             const datetime_string = year_string + month_string + date_string;
-            const onSelectDateTime = masterGrpList[this.props.masterGid-1].datetime.find((date) => {
+            const onSelectDateTime = datetime_list.find((date) => {
                 return date.date === datetime_string;
             })
             console.log(onSelectDateTime);
@@ -73,12 +72,52 @@ class SimpleSlider extends Component {
             if(onSelectDateTime){
                 return onSelectDateTime.time_list;
             } else {
-                return null;
+                return 'no free time';
             }
         }
 
-        console.log(intializeTimeList());
-        this.props.setSelectedDate_timeList(intializeTimeList());
+
+        const fetch_datetimelist = () => {
+            const year_string = `${currentDateObject.getFullYear()}`;
+            const month_string = (
+                currentDateObject.getMonth() + 1> 10?
+                `${currentDateObject.getMonth() + 1}`: '0' + `${currentDateObject.getMonth() + 1}`
+            )
+            const date_string = (
+                currentDateObject.getDate() > 10?
+                `${currentDateObject.getDate()}`: '0' + `${currentDateObject.getDate()}`
+            )
+
+            const datetime_string = year_string + month_string + date_string;
+
+            const params = {
+                gid: this.props.masterGid,
+                day: 365,
+                start_date: datetime_string
+            }
+
+            let esc = encodeURIComponent;
+            const queryString = Object.keys(params)
+                                .map((ele) => esc(ele) + '=' + esc(params[ele])).join('&');
+            
+                                
+            fetch('https://hsintian.tk/api/freetime/get/?' + queryString, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                this.setState({
+                    selectedGrp_datetime: data.infos.datetime
+                })
+                this.props.setSelectedDate_timeList(intializeTimeList(data.infos.datetime));
+            })
+            .catch(err => console.log(err))
+        }
+
+        fetch_datetimelist();
     }
 
     componentDidUpdate(prevState){
@@ -107,26 +146,26 @@ class SimpleSlider extends Component {
         }
     }
 
-    selectDateHandler = (seletedDate) => {
+    selectDateHandler = (selectedDate) => {
         this.setState({
-            onSelectDate: seletedDate
+            onSelectDate: selectedDate
         })
         
-        this.props.setDateTimeString(seletedDate);
+        this.props.setDateTimeString(selectedDate);
 
-        const intializeTimeList = () => {
-            const year_string = `${seletedDate.getFullYear()}`;
+        const intializeTimeList = (selectedDate) => {
+            const year_string = `${selectedDate.getFullYear()}`;
             const month_string = (
-                seletedDate.getMonth() + 1> 10?
-                `${seletedDate.getMonth() + 1}`: '0' + `${seletedDate.getMonth() + 1}`
+                selectedDate.getMonth() + 1 > 10?
+                `${selectedDate.getMonth() + 1}`: '0' + `${selectedDate.getMonth() + 1}`
             )
             const date_string = (
-                seletedDate.getDate() > 10?
-                `${seletedDate.getDate()}`: '0' + `${seletedDate.getDate()}`
+                selectedDate.getDate() > 10?
+                `${selectedDate.getDate()}`: '0' + `${selectedDate.getDate()}`
             )
 
             const datetime_string = year_string + month_string + date_string;
-            const onSelectDateTime = masterGrpList[this.props.masterGid-1].datetime.find((date) => {
+            const onSelectDateTime = this.state.selectedGrp_datetime.find((date) => {
                 console.log(date.date);
                 console.log(date_string);
                 return date.date === datetime_string;
@@ -140,7 +179,7 @@ class SimpleSlider extends Component {
             }
         }
 
-        intializeTimeList();
+        intializeTimeList(selectedDate);
     }
 
     render(){

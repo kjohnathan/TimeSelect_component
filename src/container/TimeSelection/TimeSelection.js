@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Loading from '../../UI/Loading/Loading';
+
 import classes from './TimeSelection.module.scss';
 
 class TimeSelection extends Component {
@@ -8,8 +10,7 @@ class TimeSelection extends Component {
     }
 
     componentDidMount(){
-        console.log('TimeSelection, componentDidMount');
-
+        console.log('TimeSelection, componentDidMount', this.props.selectedDate_timeList);
     }
 
     onClickHandler = (e, number) => {
@@ -37,7 +38,7 @@ class TimeSelection extends Component {
                         </div>
                         <button 
                             id={classes.ReserveButton}
-                            onClick={() => this.props.makeReservation(null, time.master_id)}>
+                            onClick={() => this.props.makeReservation(time.master_id, time.time)}>
                             預約
                         </button>
                     </div>
@@ -51,11 +52,19 @@ class TimeSelection extends Component {
             ]
         }
 
-        return (
-            <div className={classes.TimeDivsContainer}>
-                {timePeriodDivs}
-            </div>
-        )
+        if (this.props.selectedDate_timeList === null){
+            return (
+                <div className={classes.TimeDivsContainer}>
+                    <Loading />
+                </div>
+            )
+        } else {
+            return (
+                <div className={classes.TimeDivsContainer}>
+                    {timePeriodDivs}
+                </div>
+            )
+        }
     }
 }
 
