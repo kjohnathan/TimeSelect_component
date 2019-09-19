@@ -27,6 +27,8 @@ class App extends Component {
     componentDidMount(){
         console.log(liff);
         this.initializeLIFF();
+        const obbbbbb = {"altText": "新的預約成立了", "contents": {"contents": [{"body": {"contents": [{"color": "#40653E", "margin": "lg", "size": "md", "text": "Reservation", "type": "text", "weight": "bold"}, {"contents": [{"color": "#aaaaaa", "flex": 4, "size": "md", "text": "預約人姓名", "type": "text"}, {"color": "#666666", "flex": 6, "size": "md", "text": "{{reservation['name']}}", "type": "text", "wrap": true}], "layout": "baseline", "margin": "xxl", "spacing": "sm", "type": "box"}, {"contents": [{"color": "#aaaaaa", "flex": 4, "size": "md", "text": "預定時間", "type": "text"}, {"color": "#666666", "flex": 6, "size": "md", "text": "{{reservation['datetime']}}", "type": "text", "wrap": true}], "layout": "baseline", "margin": "lg", "spacing": "sm", "type": "box"}, {"contents": [{"contents": [{"color": "#aaaaaa", "flex": 4, "size": "sm", "text": "地點", "type": "text"}, {"color": "#666666", "flex": 6, "size": "sm", "text": "台北市中山區民生西路45巷5弄5號", "type": "text", "wrap": true}], "layout": "baseline", "spacing": "sm", "type": "box"}], "layout": "vertical", "margin": "lg", "spacing": "sm", "type": "box"}], "layout": "vertical", "type": "box"}, "direction": "ltr", "footer": {"contents": [{"size": "sm", "type": "spacer"}, {"action": {"data": "first_cancel_reservation-{{reservation['reservation_id']}}-{{reservation['datetime']}}", "label": "取消預約", "type": "postback"}, "color": "#8E9881", "height": "sm", "style": "primary", "type": "button"}, {"action": {"label": "聯絡客服", "type": "uri", "uri": "https://line.me/R/ti/p/%40zpp7402i"}, "color": "#DD8464", "height": "sm", "margin": "lg", "style": "primary", "type": "button"}], "layout": "horizontal", "type": "box"}, "type": "bubble"}], "type": "carousel"}, "type": "flex"};
+        console.log(JSON.parse(JSON.stringify(obbbbbb)));
     }
 
     makeReservation = (master_id, time) => {
@@ -63,8 +65,157 @@ class App extends Component {
         .then(res => res.json())
         .then(data => {
             if (data.status ==='success'){
-            liff.closeWindow();
-        }})
+                const obj = { 
+                    "altText": "新的預約成立了",
+                    "contents": { 
+                       "contents": [ 
+                            { 
+                                "body": { 
+                                    "contents": [ 
+                                        { 
+                                        "color":"#40653E",
+                                        "margin":"lg",
+                                        "size":"md",
+                                        "text":"Reservation",
+                                        "type":"text",
+                                        "weight":"bold"
+                                        },
+                                        { 
+                                            "contents": [ 
+                                                { 
+                                                    "color":"#aaaaaa",
+                                                    "flex":4,
+                                                    "size":"md",
+                                                    "text":"預約人姓名",
+                                                    "type":"text"
+                                                },
+                                                { 
+                                                    "color":"#666666",
+                                                    "flex":6,
+                                                    "size":"md",
+                                                    "text":"{{reservation['name']}}",
+                                                    "type":"text",
+                                                    "wrap":true
+                                                }
+                                            ],
+                                            "layout":"baseline",
+                                            "margin":"xxl",
+                                            "spacing":"sm",
+                                            "type":"box"
+                                        },
+                                        { 
+                                            "contents": [ 
+                                                { 
+                                                    "color":"#aaaaaa",
+                                                    "flex":4,
+                                                    "size":"md",
+                                                    "text":"預定時間",
+                                                    "type":"text"
+                                                },
+                                                { 
+                                                    "color":"#666666",
+                                                    "flex":6,
+                                                    "size":"md",
+                                                    "text":"{{reservation['datetime']}}",
+                                                    "type":"text",
+                                                    "wrap":true
+                                                }
+                                            ],
+                                            "layout":"baseline",
+                                            "margin":"lg",
+                                            "spacing":"sm",
+                                            "type":"box"
+                                        },
+                                        { 
+                                            "contents": [ 
+                                                { 
+                                                    "contents":[ 
+                                                        { 
+                                                            "color":"#aaaaaa",
+                                                            "flex":4,
+                                                            "size":"sm",
+                                                            "text":"地點",
+                                                            "type":"text"
+                                                        },
+                                                        { 
+                                                            "color":"#666666",
+                                                            "flex":6,
+                                                            "size":"sm",
+                                                            "text":"台北市中山區民生西路45巷5弄5號",
+                                                            "type":"text",
+                                                            "wrap":true
+                                                        }
+                                                    ],
+                                                    "layout":"baseline",
+                                                    "spacing":"sm",
+                                                    "type":"box"
+                                                }
+                                            ],
+                                            "layout": "vertical",
+                                            "margin": "lg",
+                                            "spacing": "sm",
+                                            "type": "box"
+                                        }
+                                    ],
+                                    "layout": "vertical",
+                                    "type": "box"
+                                },
+                                "direction": "ltr",
+
+
+                                "footer": {
+                                    "layout":"horizontal",
+                                    "type":"box",
+                                    "contents":[ 
+                                        { 
+                                            "size":"sm",
+                                            "type":"spacer"
+                                        },
+                                        { 
+                                            "action":{ 
+                                                // "data": "first_cancel_reservation-{{reservation['reservation_id']}}-{{reservation['datetime']}}",
+                                                "label": "取消預約",
+                                                // "type": "postback"
+                                            },
+                                            "color": "#8E9881",
+                                            "height": "sm",
+                                            "style": "primary",
+                                            "type": "button"
+                                        },
+                                        { 
+                                            "action":{ 
+                                                "label":"聯絡客服",
+                                                "type":"uri",
+                                                "uri":"https://line.me/R/ti/p/%40zpp7402i"
+                                            },
+                                            "color":"#DD8464",
+                                            "height":"sm",
+                                            "margin":"lg",
+                                            "style":"primary",
+                                            "type":"button"
+                                        }
+                                    ],
+                                },
+
+
+                                "type":"bubble"
+                            }
+                        ],
+                        "type":"carousel"
+                    },
+                    "type":"flex"
+                }
+                 
+                liff.sendMessages([
+                    obj
+                ])
+                .then(() => {
+                    console.log('123');
+                    this.props.setErrorMsg('msg sent');
+                })
+                .catch(err => this.props.setErrorMsg(`${err}`));
+            }
+        })
         .catch(err => console.log(err))
     }
 
@@ -121,33 +272,50 @@ class App extends Component {
                 </div>
             )
         } else if (this.props.step === 'time_select'){
-            return (
-                <div className={classes.App}>
-                    <TimeSelectLayout
-                        prevStep={this.props.prevStep}
-                        masterGid={this.props.masterGid}
-                        datetime_string={this.props.datetime_string}
-                        setDateTimeString={this.props.setDateTimeString}
-                        selectedDate_timeList={this.props.selectedDate_timeList}
-                        setSelectedDate_timeList={this.props.setSelectedDate_timeList}
-                        makeReservation={this.makeReservation}/>
-                </div>
-            )
+            if (this.props.errMsg !== null){
+                return (
+                    <div className={classes.App}>
+                        <p>{this.props.errMsg}</p>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className={classes.App}>
+                        <TimeSelectLayout
+                            prevStep={this.props.prevStep}
+                            masterGid={this.props.masterGid}
+                            datetime_string={this.props.datetime_string}
+                            setDateTimeString={this.props.setDateTimeString}
+                            selectedDate_timeList={this.props.selectedDate_timeList}
+                            setSelectedDate_timeList={this.props.setSelectedDate_timeList}
+                            makeReservation={this.makeReservation}/>
+                    </div>
+                )
+            }
+            
         } else if (this.props.step === 'finished'){
             console.log(this.props.datetime_string);
-            return (
-                <div className={classes.App}>
-                    <div style={{ textAlign: 'center' }}>
-                        <h3>已完成預約！</h3>
-                        <p>姓名：{this.props.chineseName}</p>
-                        <p>師傅：{this.state.masterId}</p>
-                        <p>時間：{this.props.datetime_string.getFullYear()}年
-                                {this.props.datetime_string.getMonth()+1}月
-                                {this.props.datetime_string.getDate()}日
-                        </p>
+            if (this.props.errMsg !== null){
+                return (
+                    <div className={classes.App}>
+                        <p>{this.props.errMsg}</p>
                     </div>
-                </div>
-            )
+                )
+            } else {
+                return (
+                    <div className={classes.App}>
+                        <div style={{ textAlign: 'center' }}>
+                            <h3>已完成預約！</h3>
+                            <p>姓名：{this.props.chineseName}</p>
+                            <p>師傅：{this.state.masterId}</p>
+                            <p>時間：{this.props.datetime_string.getFullYear()}年
+                                    {this.props.datetime_string.getMonth()+1}月
+                                    {this.props.datetime_string.getDate()}日
+                            </p>
+                        </div>
+                    </div>
+                )
+            }
         }
     }
 }
