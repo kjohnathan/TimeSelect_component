@@ -7,9 +7,15 @@ import CustomNextArrow from '../../components/customArrows/CustomNextArrow';
 import CustomPrevArrow from '../../components/customArrows/CustomPrevArrow';
 import CustomSlide from '../../components/CustomSlide/CustomSlide';
 
+import convertToDateString from './convert_dateObject_to_dateString';
+import convertToDateObject from './convert_dateString_to_dateObject';
+import intializeTimeList from './initializeTimeList';
+
 import * as actions from '../../store/action/actions';
 
 import classes from './SimpleSlider.module.scss';
+
+
 
 class SimpleSlider extends Component {
     state = {
@@ -51,54 +57,19 @@ class SimpleSlider extends Component {
 
         generat_date_list(generated_date_list, currentDateObject);
 
-        const intializeTimeList = (datetime_list) => {
-            console.log(datetime_list);
-            const year_string = `${currentDateObject.getFullYear()}`;
-            const month_string = (
-                currentDateObject.getMonth() + 1> 10?
-                `${currentDateObject.getMonth() + 1}`: '0' + `${currentDateObject.getMonth() + 1}`
-            )
-            const date_string = (
-                currentDateObject.getDate() > 10?
-                `${currentDateObject.getDate()}`: '0' + `${currentDateObject.getDate()}`
-            )
-
-            const datetime_string = year_string + month_string + date_string;
-            const onSelectDateTime = datetime_list.find((date) => {
-                return date.date === datetime_string;
-            })
-            console.log(onSelectDateTime);
-
-            if(onSelectDateTime){
-                return onSelectDateTime.time_list;
-            } else {
-                return 'no free time';
-            }
-        }
-
-
-        const fetch_datetimelist = () => {
-            const year_string = `${currentDateObject.getFullYear()}`;
-            const month_string = (
-                currentDateObject.getMonth() + 1> 10?
-                `${currentDateObject.getMonth() + 1}`: '0' + `${currentDateObject.getMonth() + 1}`
-            )
-            const date_string = (
-                currentDateObject.getDate() > 10?
-                `${currentDateObject.getDate()}`: '0' + `${currentDateObject.getDate()}`
-            )
-
-            const datetime_string = year_string + month_string + date_string;
+        const fetch_datetimelist = (dateObject) => {
+            console.log(dateObject);
+            const datetime_string = convertToDateString(dateObject);
 
             const params = {
                 gid: this.props.masterGid,
-                day: 365,
+                day: 5,
                 start_date: datetime_string
             }
 
             let esc = encodeURIComponent;
             const queryString = Object.keys(params)
-                                .map((ele) => esc(ele) + '=' + esc(params[ele])).join('&');
+                                    .map((ele) => esc(ele) + '=' + esc(params[ele])).join('&');
             
                                 
             fetch('https://hsintian.tk/api/freetime/get/?' + queryString, {
@@ -109,18 +80,21 @@ class SimpleSlider extends Component {
             })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
+                console.log(data.infos.datetime)
+                console.log(dateObject);
                 this.setState({
                     selectedGrp_datetime: data.infos.datetime
                 })
-                this.props.setSelectedDate_timeList(intializeTimeList(data.infos.datetime));
+                this.props.setSelectedDate_timeList(intializeTimeList(currentDateObject, data.infos.datetime));
             })
             .catch(err => console.log(err))
         }
 
-        fetch_datetimelist();
+        fetch_datetimelist(currentDateObject);
     }
 
-    componentDidUpdate(prevState){
+    componentDidUpdate(){
         console.log('componentDidUpdate, currentSlideIndex =', this.state.currentSlideIndex)
         console.log('componentDidUPdate', this.state.onSelectDate);
 
@@ -152,38 +126,62 @@ class SimpleSlider extends Component {
         })
         
         this.props.setDateTimeString(selectedDate);
+        
+        // const intializeTimeList = (selectedDate) => {
+        //     const datetime_string = convertToDateString(selectedDate);
 
-        const intializeTimeList = (selectedDate) => {
-            const year_string = `${selectedDate.getFullYear()}`;
-            const month_string = (
-                selectedDate.getMonth() + 1 > 10?
-                `${selectedDate.getMonth() + 1}`: '0' + `${selectedDate.getMonth() + 1}`
-            )
-            const date_string = (
-                selectedDate.getDate() > 10?
-                `${selectedDate.getDate()}`: '0' + `${selectedDate.getDate()}`
-            )
+        //     const onSelectDateTime = this.state.selectedGrp_datetime.find((date) => {
+        //         return date.date === datetime_string;
+        //     })
+        //     console.log(onSelectDateTime);
 
-            const datetime_string = year_string + month_string + date_string;
-            const onSelectDateTime = this.state.selectedGrp_datetime.find((date) => {
-                console.log(date.date);
-                console.log(date_string);
-                return date.date === datetime_string;
-            })
-            console.log(onSelectDateTime);
+        //     if(onSelectDateTime){
+        //         this.props.setSelectedDate_timeList(onSelectDateTime.time_list)
+        //     } else {
+        //         this.props.setSelectedDate_timeList('no free time');
+        //     }
+        // }
 
-            if(onSelectDateTime){
-                this.props.setSelectedDate_timeList(onSelectDateTime.time_list)
-            } else {
-                this.props.setSelectedDate_timeList('no free time');
+        // intializeTimeList(selectedDate);
+
+        console.log(this.state.onSelectDate);
+        console.log(selectedDate);
+
+        if( selectedDate > this.state.onSelectDate, 5 || 
+            selectedDate < this.state.onSelectDate){
+
+            const datetime_string = convertToDateString(selectedDate);
+            console.log('datetimeString', datetime_string);
+            const params = {
+                gid: this.props.masterGid,
+                day: 5,
+                start_date: datetime_string
             }
-        }
 
-        intializeTimeList(selectedDate);
+            let esc = encodeURIComponent;
+            const queryString = Object.keys(params)
+                                    .map((ele) => esc(ele) + '=' + esc(params[ele])).join('&'); 
+            
+            fetch('https://hsintian.tk/api/freetime/get/?' + queryString , {
+                method: 'get'
+            })
+            .then(res => res.json())
+            .then(data => {
+                    console.log('got new datetime');
+                    console.log(data);
+                    this.setState({
+                        selectedGrp_datetime: data.infos.datetime
+                    })
+                this.props.setSelectedDate_timeList(intializeTimeList(selectedDate, data.infos.datetime));
+            })
+            .catch(err => console.log(err));
+        } else {
+            this.props.setSelectedDate_timeList(intializeTimeList(selectedDate, this.state.selectedGrp_datetime));
+        }
     }
 
     render(){
-        console.log(this.state.onSelectDateTime);
+        console.log(this.state.selectedDate);
         var settings = {
             accessibility: true,
             infinite: false,
