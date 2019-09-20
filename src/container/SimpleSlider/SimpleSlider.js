@@ -8,7 +8,7 @@ import CustomPrevArrow from '../../components/customArrows/CustomPrevArrow';
 import CustomSlide from '../../components/CustomSlide/CustomSlide';
 
 import convertToDateString from './convert_dateObject_to_dateString';
-import convertToDateObject from './convert_dateString_to_dateObject';
+import converToDateObject from './convert_dateString_to_dateObject';
 import intializeTimeList from './initializeTimeList';
 
 import * as actions from '../../store/action/actions';
@@ -96,7 +96,7 @@ class SimpleSlider extends Component {
 
     componentDidUpdate(){
         console.log('componentDidUpdate, currentSlideIndex =', this.state.currentSlideIndex)
-        console.log('componentDidUPdate', this.state.onSelectDate);
+        console.log('componentDidUPdate datimelist', this.state.se);
 
         if ( this.state.currentSlideIndex + 20 > this.state.dateListArr.length){
             const cloned_dateListArr = [...this.state.dateListArr];
@@ -147,8 +147,14 @@ class SimpleSlider extends Component {
         console.log(this.state.onSelectDate);
         console.log(selectedDate);
 
-        if( selectedDate > this.state.onSelectDate, 5 || 
-            selectedDate < this.state.onSelectDate){
+        const fiveAfterOnSelectDateObject = new Date(
+            this.state.onSelectDate.getFullYear(),
+            this.state.onSelectDate.getMonth(),
+            this.state.onSelectDate.getDate() + 5
+        )
+
+        if( selectedDate > converToDateObject(this.state.selectedGrp_datetime[4].date) || 
+            selectedDate < converToDateObject(this.state.selectedGrp_datetime[0].date)){
 
             const datetime_string = convertToDateString(selectedDate);
             console.log('datetimeString', datetime_string);
@@ -181,7 +187,6 @@ class SimpleSlider extends Component {
     }
 
     render(){
-        console.log(this.state.selectedDate);
         var settings = {
             accessibility: true,
             infinite: false,
