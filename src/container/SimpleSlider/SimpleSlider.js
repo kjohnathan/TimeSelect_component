@@ -70,6 +70,8 @@ class SimpleSlider extends Component {
             let esc = encodeURIComponent;
             const queryString = Object.keys(params)
                                     .map((ele) => esc(ele) + '=' + esc(params[ele])).join('&');
+
+            console.log(queryString);
             
                                 
             fetch('https://hsintian.tk/api/freetime/get/?' + queryString, {
@@ -144,14 +146,9 @@ class SimpleSlider extends Component {
 
         // intializeTimeList(selectedDate);
 
-        console.log(this.state.onSelectDate);
-        console.log(selectedDate);
-
-        const fiveAfterOnSelectDateObject = new Date(
-            this.state.onSelectDate.getFullYear(),
-            this.state.onSelectDate.getMonth(),
-            this.state.onSelectDate.getDate() + 5
-        )
+        console.log(converToDateObject(this.state.selectedGrp_datetime[4].date));
+        console.log(this.state.selectedGrp_datetime[4].date);
+        console.log(converToDateObject(this.state.selectedGrp_datetime[4].date));
 
         if( selectedDate > converToDateObject(this.state.selectedGrp_datetime[4].date) || 
             selectedDate < converToDateObject(this.state.selectedGrp_datetime[0].date)){
@@ -163,7 +160,7 @@ class SimpleSlider extends Component {
                 day: 5,
                 start_date: datetime_string
             }
-
+ 
             let esc = encodeURIComponent;
             const queryString = Object.keys(params)
                                     .map((ele) => esc(ele) + '=' + esc(params[ele])).join('&'); 
