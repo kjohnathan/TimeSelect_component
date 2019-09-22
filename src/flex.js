@@ -97,7 +97,7 @@ const flex = {
 
 
                 "footer": {
-                    "layout":"horizontal",
+                    "layout":"vertical",
                     "type":"box",
                     "contents":[ 
                         { 
@@ -105,27 +105,10 @@ const flex = {
                             "type":"spacer"
                         },
                         { 
-                            "action":{ 
-                                // "data": "first_cancel_reservation-{{reservation['reservation_id']}}-{{reservation['datetime']}}",
-                                "label": "取消預約",
-                                // "type": "postback"
-                            },
-                            "color": "#8E9881",
-                            "height": "sm",
-                            "style": "primary",
-                            "type": "button"
-                        },
-                        { 
-                            "action":{ 
-                                "label":"聯絡客服",
-                                "type":"uri",
-                                "uri":"https://line.me/R/ti/p/%40zpp7402i"
-                            },
-                            "color":"#DD8464",
-                            "height":"sm",
-                            "margin":"lg",
-                            "style":"primary",
-                            "type":"button"
+                            "color":"#aaaaaa",
+                            "flex":10,
+                            "size":"md",
+                            "text":"PS. 若要取消預約，請點擊查詢預約後取消。",
                         }
                     ],
                 },
