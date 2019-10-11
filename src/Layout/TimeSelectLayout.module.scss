@@ -1,6 +1,6 @@
 .timeSelectLayout {
     display: grid;
-    grid-template-rows: 75px 75px auto;
+    grid-template-rows: 60px 60px 60px auto;
     grid-template-columns: auto;
     text-align: center;
 
@@ -21,4 +21,8 @@
     width: 73.14px;
     height: 35px;
     margin-left: 20px;
+}
+
+.YearBar {
+    display: inline-block;
 }

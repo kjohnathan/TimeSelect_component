@@ -8,7 +8,7 @@ import TimeSelectLayout from './Layout/TimeSelectLayout';
 
 import * as actions from './store/action/actions';
 
-import flex from './flex';
+import convertToString from './container/SimpleSlider/convert_dateObject_to_dateString';
 
 const liff = window.liff;
 
@@ -19,11 +19,7 @@ class App extends Component {
     }
     
     state = {
-        masterId: '',
-        step: 'info_page',
-        datetime_string: '',
-        isConfirming: false,
-        selectedDate_timeList: null,
+        isPending: false
     }
 
     componentDidMount(){
@@ -32,31 +28,27 @@ class App extends Component {
     }
 
     makeReservation = (master_id, time) => {
-        const year_string = `${this.props.datetime_string.getFullYear()}`;
-        const month_string = (
-            this.props.datetime_string.getMonth() + 1> 10?
-            `${this.props.datetime_string.getMonth() + 1}`: '0' + `${this.props.datetime_string.getMonth() + 1}`
-        )
-        const date_string = (
-            this.props.datetime_string.getDate() > 10?
-            `${this.props.datetime_string.getDate()}`: '0' + `${this.props.datetime_string.getDate()}`
-        )
-
-        const datetime_string = year_string + month_string + date_string + time;
+        this.setState({ isPending: true })
+        const datetime_string = convertToString(this.props.datetime_string) + time;
+        
         console.log(datetime_string);
         const saved_data = {
             master_id: master_id,
             dt: datetime_string,
             line_id: this.props.line_id,
             name: this.props.chineseName,
-            phone: this.props.phoneNumber
+            phone: this.props.phoneNumber,
+            introducer: this.props.introducer,
+            gender: this.props.gender,
+            age: this.props.age,
+            city: this.props.city,
+            district: this.props.district
         }
+        console.log(saved_data);
         const reservation_data = new FormData();
         for ( let ele in saved_data){
             reservation_data.append(ele, saved_data[ele]);
         }
-
-        console.log(reservation_data);
 
         fetch('https://hsintian.tk/api/reservation/post', {
             method: 'POST',
@@ -64,15 +56,37 @@ class App extends Component {
         })
         .then(res => res.json())
         .then(data => {
+            console.log(data);
             if (data.status ==='success'){
-                liff.sendMessages([
-                    flex
-                ])
-                .then(() => {
-                    console.log('123');
-                    this.props.setErrorMsg('msg sent');
+                const reservation_post_datetime = (
+                    data.info.datetime.slice(0, 4) + '/' +
+                    data.info.datetime.slice(4, 6) + '/' +
+                    data.info.datetime.slice(6, 8) + ' ' + 
+                    data.info.datetime.slice(8, 10) + ':' +
+                    data.info.datetime.slice(10, 12)
+                )
+                console.log(reservation_post_datetime);
+
+                const reservationObj = {
+                    line_id: data.info.line_id,
+                    reservation_id: data.info.reservation_id,
+                    name: data.info.name,
+                    datetime: reservation_post_datetime
+                }
+                const reservationFormData = new FormData();
+                for ( let ele in reservationObj){
+                    reservationFormData.append(ele, reservationObj[ele]);
+                }
+
+                return fetch('https://hsintian.tk/api/send_reservation/post', {
+                    method: 'POST',
+                    body: reservationFormData
                 })
-                .catch(err => this.props.setErrorMsg(`${err}`));
+                .then(data => liff.closeWindow())
+                .catch(err => {
+                    console.log(err);
+                    this.props.setErrorMsg(`${err}`)
+                })
             }
         })
         .catch(err => console.log(err))
@@ -97,11 +111,25 @@ class App extends Component {
             })
             .then( res => res.json())
             .then( data => {
-                this.props.setInfoContent('chineseName', data.info.name);
-                this.props.setInfoContent('phoneNumber', data.info.phone);
-                this.props.setInfoContent('line_data_status', 'used');
+                console.log(data);
+                if (data.info.is_black === true){
+                    liff.sendMessages([{
+                        type: 'text',
+                        text: '您之前因為有缺席紀錄，我們系統自動將您列入觀察名單，請您聯繫客服完成訂位喔'
+                    }])
+                    .then(() => liff.closeWindow())
+                    .catch(err => this.props.setErrorMsg(`${err}`));
+                } else {
+                    this.props.setInfoContent('chineseName', data.info.name);
+                    this.props.setInfoContent('phoneNumber', data.info.phone);
+                    this.props.setInfoContent('line_data_status', 'used');
+                    this.props.setInfoContent('city', data.info.city);
+                    this.props.setInfoContent('district', data.info.district);
+                    this.props.setInfoContent('age', data.info.age);
+                    this.props.setInfoContent('gender', data.info.gender);
+                }
             })
-            .catch(err => err);
+            .catch(err => this.props.setErrorMsg(`${err}`));
         }
     }
 
@@ -110,14 +138,17 @@ class App extends Component {
         if (this.props.step === 'info_page'){
             return (
                 <div className={classes.App}>
-                    <p>{this.props.line_id}</p>
-                    {this.props.line_data_status?
-                        <p>success</p>: <p>failed</p>}
                     <InfoPage 
                         onChangeHandler={this.props.onChangeHandler}
+                        dropDownSelectHandler={this.props.dropDownSelectHandler}
                         chineseName={this.props.chineseName}
                         phoneNumber={this.props.phoneNumber}
-                        nextStep={this.props.nextStep}/>
+                        city={this.props.city}
+                        district={this.props.district}
+                        gender={this.props.gender}
+                        age={this.props.age}
+                        nextStep={this.props.nextStep}
+                        unfilled_blanks={this.props.unfilled_blanks}/>
                 </div>
             );
         } else if (this.props.step === 'teacher_select'){
@@ -141,40 +172,26 @@ class App extends Component {
                 return (
                     <div className={classes.App}>
                         <TimeSelectLayout
+                            isPending={this.state.isPending}
+                            isFetchingTime={this.props.isFetchingTime}
                             prevStep={this.props.prevStep}
                             masterGid={this.props.masterGid}
                             datetime_string={this.props.datetime_string}
                             setDateTimeString={this.props.setDateTimeString}
                             selectedDate_timeList={this.props.selectedDate_timeList}
                             setSelectedDate_timeList={this.props.setSelectedDate_timeList}
-                            makeReservation={this.makeReservation}/>
+                            makeReservation={this.makeReservation}
+                            fetchTime={this.props.fetchTime}/>
                     </div>
                 )
             }
             
         } else if (this.props.step === 'finished'){
-            console.log(this.props.datetime_string);
-            if (this.props.errMsg !== null){
-                return (
-                    <div className={classes.App}>
-                        <p>{this.props.errMsg}</p>
-                    </div>
-                )
-            } else {
-                return (
-                    <div className={classes.App}>
-                        <div style={{ textAlign: 'center' }}>
-                            <h3>已完成預約！</h3>
-                            <p>姓名：{this.props.chineseName}</p>
-                            <p>師傅：{this.state.masterId}</p>
-                            <p>時間：{this.props.datetime_string.getFullYear()}年
-                                    {this.props.datetime_string.getMonth()+1}月
-                                    {this.props.datetime_string.getDate()}日
-                            </p>
-                        </div>
-                    </div>
-                )
-            }
+            return (
+                <div className={classes.App}>
+                    <p>{this.props.errMsg}</p>
+                </div>
+            )
         }
     }
 }
@@ -183,13 +200,20 @@ const mapStateToProps = state => {
     return {
         chineseName: state.chineseName,
         phoneNumber: state.phoneNumber,
+        introducer: state.introducer,
+        city: state.city,
+        district: state.district,
+        gender: state.gender,
+        age: state.age,
+        unfilled_blanks: state.unfilled_blanks,
         masterGid: state.masterGid,
         step: state.step,
         selectedDate_timeList: state.selectedDate_timeList,
         datetime_string: state.datetime_string,
         line_id: state.line_id,
         line_data_status: state.line_data_status,
-        errMsg: state.errMsg
+        errMsg: state.errMsg,
+        isFetchingTime: state.isFetchingTime
     }
 }
 
@@ -197,12 +221,14 @@ const mapDispatchToProps = dispatch => {
     return {
         setInfoContent: (infoType, updatedValue) => dispatch(actions.setInfoContent(infoType, updatedValue)),
         onChangeHandler: (e, language_of_name) => dispatch(actions.onChangeHandler(e, language_of_name)),
+        dropDownSelectHandler: (selection_name, value) => dispatch(actions.DROP_DOWN_SELECT(selection_name, value)),
         onSelectMasterGroup: (teacherName) => dispatch(actions.onSelectMasterGroup(teacherName)),
         nextStep: () => dispatch(actions.nextStep()),
         prevStep: () => dispatch(actions.prevStep()),
         setDateTimeString: (datetimestring) => dispatch(actions.setDateTimeString(datetimestring)),
         setSelectedDate_timeList: (timeList) => dispatch(actions.setSelectedDate_timeList(timeList)),
-        setErrorMsg: (errMsg) => dispatch(actions.setErrorMsg(errMsg))
+        setErrorMsg: (errMsg) => dispatch(actions.setErrorMsg(errMsg)),
+        fetchTime: (isFetching) => dispatch(actions.fetchTime(isFetching))
     }
 }
  

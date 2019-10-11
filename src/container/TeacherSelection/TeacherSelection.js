@@ -42,36 +42,22 @@ class teachderSelection extends Component {
     
         if (this.state.teachersList.length !== 0){
             this.state.teachersList.forEach((masterGrp, index) => {
-                // if (teacher.masterGid === this.props.masterGid){
-                //     teacherDivs.push(
-                //         <TeacherDiv
-                //             key={teacher.teacherName}
-                //             imgSrc={teacher.imgSrc}
-                //             teacherName={teacher.teacherName}
-                //             masterGid={teacher.masterGid}
-                //             teacherIntro={teacher.teacherIntro}
-                //             onSelectMasterGroup={this.props.onSelectMasterGroup}
-                //             selected={true}
-                //         />
-                //     )
-                // } 
-                // else {
-                    teacherDivs.push(
-                        <TeacherDiv
-                            key={masterGrp.group}
-                            imgSrc={masterGrp.imgSrc}
-                            groupName={masterGrp.group}
-                            masterGid={index+1}
-                            teacherIntro={masterGrp.descript}
-                            onSelectMasterGroup={this.props.onSelectMasterGroup}
-                        />
-                    )
-                // }
+                teacherDivs.push(
+                    <TeacherDiv
+                        key={masterGrp.group}
+                        imgSrc={masterGrp.image}
+                        groupName={masterGrp.group}
+                        masterGid={index+1}
+                        teacherIntro={masterGrp.descript}
+                        onSelectMasterGroup={this.props.onSelectMasterGroup}
+                    />
+                )
             })
         }
 
         return (
             <div className={classes.TeacherSelectionPage}>
+                <img id={classes.selectMasterPic} src='/static/appointment/media/selectMaster.png' />
                 <div>
                     <button
                         className={classes.PrevStepButton}

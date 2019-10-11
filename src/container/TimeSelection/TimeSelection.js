@@ -52,7 +52,7 @@ class TimeSelection extends Component {
             ]
         }
 
-        if (this.props.selectedDate_timeList === null){
+        if ( this.props.selectedDate_timeList === null || this.props.isFetchingTime === true ){
             return (
                 <div className={classes.TimeDivsContainer}>
                     <Loading />

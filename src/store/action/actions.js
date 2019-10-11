@@ -17,6 +17,14 @@ export const onChangeHandler = (e, language_of_name) => {
     }
 }
 
+export const DROP_DOWN_SELECT = (selection_name, value) => {
+    return {
+        type: actionTypes.DROP_DOWN_SELECT,
+        selection_name: selection_name,
+        value: value
+    }
+}
+
 export const onSelectMasterGroup = (masterGid) => {
     return {
         type: actionTypes.SELECT_MASTER_GROUP,
@@ -54,5 +62,12 @@ export const setErrorMsg = ( errMsg ) => {
     return {
         type: actionTypes.SET_ERROR_MSG,
         errMsg: errMsg
+    }
+}
+
+export const fetchTime = (isFetching) => {
+    return {
+        type: actionTypes.FETCH_TIME,
+        isFetching: isFetching
     }
 }

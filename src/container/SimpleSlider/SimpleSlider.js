@@ -16,19 +16,19 @@ import * as actions from '../../store/action/actions';
 import classes from './SimpleSlider.module.scss';
 
 
-
 class SimpleSlider extends Component {
     state = {
         currentSlideIndex: 0,
         onSelectDate: '',
+        //array of producing innerSliders
         dateListArr: [],
         newDateListArrLength: 0,
+        //to store the freetimelist got from the api
         dateTimeList: null,
         selectedGrp_datetime: null,
     }
 
     componentDidMount(){
-        console.log('SimpleSlider', 'componentDidMount');
         const currentDateObject = new Date();
 
         this.props.setDateTimeString(currentDateObject);
@@ -39,7 +39,6 @@ class SimpleSlider extends Component {
             for (let i = 0; i < 20; i++){
                 if ( i === 0 ){
                     generated_date_list.push(currentDateObject);
-                    console.log('first object');
                 } else {
                     const next_date = new Date(
                         currentDateObject.getFullYear(),
@@ -58,7 +57,6 @@ class SimpleSlider extends Component {
         generat_date_list(generated_date_list, currentDateObject);
 
         const fetch_datetimelist = (dateObject) => {
-            console.log(dateObject);
             const datetime_string = convertToDateString(dateObject);
 
             const params = {
@@ -70,8 +68,6 @@ class SimpleSlider extends Component {
             let esc = encodeURIComponent;
             const queryString = Object.keys(params)
                                     .map((ele) => esc(ele) + '=' + esc(params[ele])).join('&');
-
-            console.log(queryString);
             
                                 
             fetch('https://hsintian.tk/api/freetime/get/?' + queryString, {
@@ -82,9 +78,6 @@ class SimpleSlider extends Component {
             })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-                console.log(data.infos.datetime)
-                console.log(dateObject);
                 this.setState({
                     selectedGrp_datetime: data.infos.datetime
                 })
@@ -97,9 +90,6 @@ class SimpleSlider extends Component {
     }
 
     componentDidUpdate(){
-        console.log('componentDidUpdate, currentSlideIndex =', this.state.currentSlideIndex)
-        console.log('componentDidUPdate datimelist', this.state.se);
-
         if ( this.state.currentSlideIndex + 20 > this.state.dateListArr.length){
             const cloned_dateListArr = [...this.state.dateListArr];
             const last_ele_in_dateListArr = cloned_dateListArr[cloned_dateListArr.length -1];
@@ -123,32 +113,21 @@ class SimpleSlider extends Component {
     }
 
     selectDateHandler = (selectedDate) => {
+        if (selectedDate === this.state.onSelectDate){
+            return;
+        }
+
         this.setState({
             onSelectDate: selectedDate
         })
+        this.props.setSelectedDate_timeList(null);
         
         this.props.setDateTimeString(selectedDate);
-        
-        // const intializeTimeList = (selectedDate) => {
-        //     const datetime_string = convertToDateString(selectedDate);
-
-        //     const onSelectDateTime = this.state.selectedGrp_datetime.find((date) => {
-        //         return date.date === datetime_string;
-        //     })
-        //     console.log(onSelectDateTime);
-
-        //     if(onSelectDateTime){
-        //         this.props.setSelectedDate_timeList(onSelectDateTime.time_list)
-        //     } else {
-        //         this.props.setSelectedDate_timeList('no free time');
-        //     }
-        // }
-
-        // intializeTimeList(selectedDate);
 
         console.log(converToDateObject(this.state.selectedGrp_datetime[4].date));
         console.log(this.state.selectedGrp_datetime[4].date);
-        console.log(converToDateObject(this.state.selectedGrp_datetime[4].date));
+        console.log(selectedDate);
+        console.log(selectedDate > converToDateObject(this.state.selectedGrp_datetime[4].date));
 
         if( selectedDate > converToDateObject(this.state.selectedGrp_datetime[4].date) || 
             selectedDate < converToDateObject(this.state.selectedGrp_datetime[0].date)){
@@ -160,7 +139,7 @@ class SimpleSlider extends Component {
                 day: 5,
                 start_date: datetime_string
             }
- 
+
             let esc = encodeURIComponent;
             const queryString = Object.keys(params)
                                     .map((ele) => esc(ele) + '=' + esc(params[ele])).join('&'); 
@@ -176,21 +155,24 @@ class SimpleSlider extends Component {
                         selectedGrp_datetime: data.infos.datetime
                     })
                 this.props.setSelectedDate_timeList(intializeTimeList(selectedDate, data.infos.datetime));
+                this.props.fetchTime(false);
             })
             .catch(err => console.log(err));
         } else {
-            this.props.setSelectedDate_timeList(intializeTimeList(selectedDate, this.state.selectedGrp_datetime));
+            setTimeout(() => {
+                this.props.setSelectedDate_timeList(intializeTimeList(selectedDate, this.state.selectedGrp_datetime));
+            }, 500)
         }
     }
 
     render(){
-        var settings = {
+        let settings = {
             accessibility: true,
             infinite: false,
             speed: 300,
             slidesToShow: 3,
             slidesToScroll: 3,
-            swipe: false,
+            swipe: true,
             adaptiveHeight: true,
             arrows: true,
             nextArrow: <CustomNextArrow />, 

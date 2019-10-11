@@ -113,7 +113,6 @@ const flex = {
                     ],
                 },
 
-
                 "type":"bubble"
             }
         ],

@@ -3,11 +3,18 @@ import * as actionTypes from '../action/actionTypes';
 const initialState = {
     chineseName: '',
     phoneNumber: '',
-    masterId: '',
+    introducer: '',
+    age: '',
+    city: '',
+    gender: '',
+    district: '',
+    unfilled_blanks: [],
+    masterId: '',   
     masterGid: null,
     step: 'info_page',
     selectedDate_timeList: null,
     datetime_string: null,
+    isFetchingTime: false,
     line_id: null,
     line_data_status: null,
     errMsg: null
@@ -34,12 +41,24 @@ const reducer = ( state = initialState , action ) => {
                     ...state,
                     phoneNumber: action.updatedValue
                 }
-            } 
-            else {
+            } else if (action.language_of_name === 'introducer'){
+                return {
+                    ...state,
+                    introducer: action.updatedValue
+                }
+            } else {
                 return state;
             }
         break;
         
+        case actionTypes.DROP_DOWN_SELECT:
+            console.log(action.value);
+            console.log(action.selection_name);
+            return {
+                ...state,
+                [action.selection_name]: action.value
+            }
+
         case actionTypes.SELECT_MASTER_GROUP:
             return {
                 ...state,
@@ -50,23 +69,39 @@ const reducer = ( state = initialState , action ) => {
 
         case actionTypes.NEXT_STEP:
             if (state.step === 'info_page'){
-                if (state.chineseName !== '' && state.engName !== ''){
+                const info_validate = () => {
+                    const info_list = [ 'chineseName', 'phoneNumber', 'gender', 'age', 'city', 'district' ];
+                    const unfilled_infos = [];
+                    info_list.forEach((info) => {
+                        console.log(state[info]);
+                        if ( !state[info] ){
+                            unfilled_infos.push(info)
+                        }
+                    })
+
+                    console.log(unfilled_infos);
+
+                    if (!unfilled_infos.length){
+                        return 'passed';
+                    } else {
+                        return unfilled_infos;
+                    }
+                    console.log('validating');
+                }
+
+                if ( info_validate() === 'passed' ){
                     return {
                         ...state,
                         step: 'teacher_select'
                     }
                 } else {
-                    console.log('請確實填寫姓名');
-                    alert('請確實填寫資訊!!');
-                    return state;
-                }
-            } else {
-                return {
-                    ...state,
-                    step: 'finished'
+                    console.log(info_validate())
+                    return {
+                        ...state,
+                        unfilled_blanks: info_validate()
+                    }
                 }
             }
-
 
         case actionTypes.PREV_STEP:
             if (state.step === 'teacher_select'){
@@ -111,6 +146,12 @@ const reducer = ( state = initialState , action ) => {
             return {
                 ...state,
                 errMsg: action.errMsg
+            }
+
+        case actionTypes.FETCH_TIME:
+            return {
+                ...state,
+                isFetchingTime: action.isFetching
             }
 
         default:
