@@ -8,25 +8,25 @@
 }
 
 .TeacherImg {
-    width: 125px;
-    height: 125px;
+    width: 100px;
+    height: 100px;
     overflow: hidden;
     object-fit: cover;
     border-radius: 100%;
-    margin-left: 30px;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: auto auto auto auto;
 }
 
 .TeacherInfo {
     width: 100%;
     overflow-x: hidden;
-     
-    p {
-        margin: 0 10px 0 10px;
-        text-align: left;
-        white-space: pre-wrap;
-    }
+    margin: auto 0 auto 0;
+}
+
+.TeacherIntroContent {
+    font-size: 12px;
+    white-space: pre-wrap;
+    margin: 0 10px 0 10px;
+    text-align: left;
 }
 
 .SelectedTeacherInfo {
@@ -38,16 +38,4 @@
         margin: 0 10px 0 10px;
         text-align: center;
     }
-}
-
-button {
-    display: inline-block;
-    margin: 0 auto 0 auto;
-    position: relative;
-    top: 20px;
-    border: 1px solid #ccc;
-    padding: 5px;
-    font-size: 20px;
-    margin-right: 10px;
-    margin-bottom: 20px;
 }

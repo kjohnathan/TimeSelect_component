@@ -33,14 +33,14 @@ class TimeSelection extends Component {
                 timePeriodDivs.push(
                     <div className={classes.TimePeriodDiv}>
                         <div className={classes.InfoDiv}>
-                            <p>師傅:{time.master_id}</p>
-                            <p>時間: {time.time}</p>
+                            <p>師傅：{time.master_name}</p>
+                            <p>時間：{time.time}</p>
                         </div>
-                        <button 
+                        <p
                             id={classes.ReserveButton}
                             onClick={() => this.props.makeReservation(time.master_id, time.time)}>
-                            預約
-                        </button>
+                            <u>預&nbsp;&nbsp;約</u>
+                        </p>
                     </div>
                 )
             })

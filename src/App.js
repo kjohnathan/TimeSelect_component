@@ -148,7 +148,7 @@ class App extends Component {
                         gender={this.props.gender}
                         age={this.props.age}
                         nextStep={this.props.nextStep}
-                        unfilled_blanks={this.props.unfilled_blanks}/>
+                        unfilled_blanks={this.props.unfilled_blanks}/>ˋ
                 </div>
             );
         } else if (this.props.step === 'teacher_select'){
@@ -185,7 +185,6 @@ class App extends Component {
                     </div>
                 )
             }
-            
         } else if (this.props.step === 'finished'){
             return (
                 <div className={classes.App}>
@@ -193,7 +192,7 @@ class App extends Component {
                 </div>
             )
         }
-    }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 }
 
 const mapStateToProps = state => {

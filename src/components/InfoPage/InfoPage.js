@@ -2,6 +2,7 @@ import React from 'react';
 
 import cities from './cities';
 import ages from './ages';
+import Button from '../../UI/Button/Button';
 
 import classes from './InfoPage.module.scss';
 
@@ -11,7 +12,7 @@ const infoPage = (props) => {
 
     const cities_options = cities_arr.map((city) => (
         <option key={city}>{city}</option>
-    ))
+    ));
 
     let district_arr = null;
     let district_options = [];
@@ -21,11 +22,24 @@ const infoPage = (props) => {
         district_options = district_arr.map((district) => (
             <option key={district}>{district}</option>
         ))
-    }
+    };
 
     const ages_options = ages.map((age_range) => (
         <option key={age_range}>{age_range}</option>
     ))
+
+    const onChangeHandler = (e, type) => {
+        const pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\]<>/?~！@#￥……&*（）——|{}    【】‘；：”“'。，、？]");
+        console.log(pattern.test(e.target.value));
+        if ( pattern.test(e.target.value)){
+            e.target.value = '';
+            return ;
+        } else {
+            console.log('1');
+            console.log(type);
+            props.onChangeHandler(e, type);
+        }
+    }
 
     return (
         <div className={classes.FormContainer}>
@@ -48,7 +62,7 @@ const infoPage = (props) => {
                     value={props.chineseName}
                     name='chineseName'
                     className={classes.InfoInput}
-                    onChange={(e) => props.onChangeHandler(e, 'chineseName')}/>
+                    onChange={(e) => onChangeHandler(e, 'chineseName')}/>
                 <div className={classes.infoTitle}>
                     <label>
                         手機號碼
@@ -64,7 +78,7 @@ const infoPage = (props) => {
                     value={props.phoneNumber}
                     name='phoneNumber'
                     className={classes.InfoInput}
-                    onChange={(e) => props.onChangeHandler(e, 'phoneNumber')}/>
+                    onChange={(e) => onChangeHandler(e, 'phoneNumber')}/>
                 <div className={classes.infoTitle}>
                     <label>介紹人</label>
                 </div>
@@ -72,7 +86,7 @@ const infoPage = (props) => {
                     autoComplete='off'
                     placeholder='若無則不填'
                     className={classes.InfoInput}
-                    onChange={(e) => props.onChangeHandler(e, 'introducer')}/>
+                    onChange={(e) => onChangeHandler(e, 'introducer')}/>
                 <div className={classes.selectionBar}>
                     <select 
                         style={
@@ -134,16 +148,17 @@ const infoPage = (props) => {
                         {district_options}
                     </select>
                 </div>
-                <button
-                    onClick={(e) => {
-                        e.preventDefault();
-                        props.nextStep();
-                    }}>        
-                    下一步
-                </button>
-
+                <div className={classes.ButtonContainer}>
+                    <Button
+                        onClickHandler={(e) => {
+                            e.preventDefault();
+                            props.nextStep();
+                        }}>        
+                        下一步
+                    </Button>
+                </div>
             </form>
-
+            <footer className={classes.Footer}></footer>
         </div>
     )
 }

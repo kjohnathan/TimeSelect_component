@@ -16,6 +16,8 @@ const customSlide = (props) => {
     const currentDay = ch_dayArr[props.dateObject.getDay()];
 
     if (props.dateObject === props.onSelectDate){
+        console.log(props.dateObject);
+        console.log(props.onSelectDate);
         return (
             <div 
                 className={classes.CurrentDateSlide}
@@ -25,13 +27,13 @@ const customSlide = (props) => {
                     props.selectDateHandler(props.dateObject);
                     props.setCurrentIndex(props.slideIndex - 1)
                 }}>
-                <h4>
+                <h5>
                     {
                         `${props.dateObject.getMonth()+1}` + '/' +
                         `${props.dateObject.getDate()}` + 
                         `(${currentDay})`
                     }
-                </h4>
+                </h5>
             </div>
         )
     } else {
@@ -44,12 +46,12 @@ const customSlide = (props) => {
                     props.selectDateHandler(props.dateObject);
                     props.setCurrentIndex(props.slideIndex - 1)
             }}>
-                <h4>
+                <h5>
                     {
                         `${props.dateObject.getMonth()+1}` + '/' +
                         `${props.dateObject.getDate()}`
                     }
-                </h4>
+                </h5>
             </div>
         )
     }

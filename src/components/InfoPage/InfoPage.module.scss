@@ -6,22 +6,10 @@
     span {
         color: red;
     }
-
-    button {
-        display: block;
-        margin: 0 auto 0 auto;
-        position: relative;
-        top: 40px;
-        border: 1px solid #ccc;
-        padding: 5px;
-        font-size: 20px;
-    }
 }
 
 .InfoForm {
     width: 80%;
-    position: relative;
-    top: 20px;
     text-align: center;
     margin: 0 auto 0 auto;
 
@@ -89,4 +77,13 @@ label {
 
 #welcomePic {
     width: 100%;
+}
+
+.ButtonContainer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.Footer {
+    height: 30px;
 }

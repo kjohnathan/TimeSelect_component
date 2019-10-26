@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 
 import TeacherDiv from '../../components/TeacherDiv/TeacherDiv';
 import Loading from '../../UI/Loading/Loading';
+import Button from '../../UI/Button/Button';
 
 import classes from './TeacherSelection.module.scss';
+import selectMasterPic from './selectMaster.png';
 
 class teachderSelection extends Component {
     constructor(props){
@@ -25,7 +27,7 @@ class teachderSelection extends Component {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data.info);
+            console.log(data.infos);
             this.setState({
             teachersList: data.infos,
             isLoading: false
@@ -47,7 +49,7 @@ class teachderSelection extends Component {
                         key={masterGrp.group}
                         imgSrc={masterGrp.image}
                         groupName={masterGrp.group}
-                        masterGid={index+1}
+                        masterGid={masterGrp.id}
                         teacherIntro={masterGrp.descript}
                         onSelectMasterGroup={this.props.onSelectMasterGroup}
                     />
@@ -57,15 +59,13 @@ class teachderSelection extends Component {
 
         return (
             <div className={classes.TeacherSelectionPage}>
-                <img id={classes.selectMasterPic} src='/static/appointment/media/selectMaster.png' />
-                <div>
-                    <button
-                        className={classes.PrevStepButton}
-                        onClick={this.props.prevStep}>
-                        上一步
-                    </button>
-                    <h2>請選擇老師</h2>
-                    <div id={classes.spaceDiv}></div>
+                <img className={classes.BannerImg} src='/static/appointment/media/selectMaster.png' />
+                <div className={classes.ButtonContainer}>
+                    <Button
+                            className={classes.PrevStepButton}
+                            onClickHandler={this.props.prevStep}>
+                            上一步
+                    </Button>
                 </div>
                 {this.state.isLoading?
                     <Loading />: 

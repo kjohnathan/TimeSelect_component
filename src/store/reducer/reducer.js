@@ -32,20 +32,29 @@ const reducer = ( state = initialState , action ) => {
 
         case actionTypes.CHANGE_NAME:
             if (action.language_of_name === 'chineseName'){
+                console.log(action.updatedValue);
                 return {
                     ...state,
                     chineseName: action.updatedValue
-                }
+                };
             } else if (action.language_of_name === 'phoneNumber'){
-                return {
-                    ...state,
-                    phoneNumber: action.updatedValue
+                const pattern = new RegExp('^[0-9]+$');
+                console.log(pattern.test(action.updatedValue));
+                if (!pattern.test(action.updatedValue) && action.updatedValue !== ''){
+                    return {
+                        ...state
+                    }
+                } else {
+                    return {
+                        ...state,
+                        phoneNumber: action.updatedValue
+                    };
                 }
             } else if (action.language_of_name === 'introducer'){
                 return {
                     ...state,
                     introducer: action.updatedValue
-                }
+                };
             } else {
                 return state;
             }
@@ -114,7 +123,9 @@ const reducer = ( state = initialState , action ) => {
                 return {
                     ...state,
                     step: 'teacher_select',
-                    classTime: ''
+                    classTime: '',
+                    selectedDate_timeList: null,
+                    datetime_string: null,
                 }
             } else {
                 return state;

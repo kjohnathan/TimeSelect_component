@@ -29,14 +29,25 @@ class SimpleSlider extends Component {
     }
 
     componentDidMount(){
-        const currentDateObject = new Date();
+        console.log('simple slider componentDidMount');
+        const currentDateObject = this.props.selectedDate_object;
 
         this.props.setDateTimeString(currentDateObject);
 
         const generated_date_list = [];
 
         const generat_date_list = (generated_date_list, currentDateObject) => {
-            for (let i = 0; i < 20; i++){
+            const lastDateInMonth = new Date(
+                this.props.selectedDate_object.getFullYear(),
+                this.props.selectedDate_object.getMonth() + 1,
+                0
+            )
+
+            const remained_days = (
+                lastDateInMonth.getDate() - this.props.selectedDate_object.getDate()
+            )
+
+            for (let i = 0; i <= remained_days; i++){
                 if ( i === 0 ){
                     generated_date_list.push(currentDateObject);
                 } else {
@@ -89,26 +100,81 @@ class SimpleSlider extends Component {
         fetch_datetimelist(currentDateObject);
     }
 
-    componentDidUpdate(){
-        if ( this.state.currentSlideIndex + 20 > this.state.dateListArr.length){
-            const cloned_dateListArr = [...this.state.dateListArr];
-            const last_ele_in_dateListArr = cloned_dateListArr[cloned_dateListArr.length -1];
-
-            for (let i = 1; i <= 3; i++){
-                cloned_dateListArr.push(
-                    new Date(
-                        last_ele_in_dateListArr.getFullYear(),
-                        last_ele_in_dateListArr.getMonth(),
-                        last_ele_in_dateListArr.getDate() + i
-                    )
-                )
+    componentDidUpdate(prevProps){
+        console.log('simple slider componentdidupdate');
+        const checkIsCurrentMonth = (selectedDate_object) => {
+            const currentDate_object = new Date();
+            
+            if ( currentDate_object.getFullYear() !== selectedDate_object.getFullYear() ){
+                return false;
+            } else if ( currentDate_object.getMonth() !== selectedDate_object.getMonth() ){
+                return false;
+            } else {
+                return true;
             }
+        }
 
-            this.setState({
-                dateListArr: cloned_dateListArr
-            })
+        if ( checkIsCurrentMonth(this.props.selectedDate_object) ){
+            if ( prevProps.selectedDate_object !== this.props.selectedDate_object){
+                const lastDateInMonth = new Date(
+                    this.props.selectedDate_object.getFullYear(),
+                    this.props.selectedDate_object.getMonth() + 1,
+                    0
+                )
+
+                const remained_days = (
+                    lastDateInMonth.getDate() - this.props.selectedDate_object.getDate()
+                )
+
+                console.log(remained_days);
+
+                const dateListArr = [];
+
+                for ( let i = 0; i <= remained_days; i++ ){
+                    const dateObejct = new Date(
+                        this.props.selectedDate_object.getFullYear(),
+                        this.props.selectedDate_object.getMonth(),
+                        this.props.selectedDate_object.getDate() + i
+                    )
+
+                    dateListArr.push(dateObejct);
+                }
+
+                this.setState({ dateListArr })
+                this.slider.slickGoTo(0);
+
+                this.selectDateHandler(dateListArr[0]);
+            }
         } else {
-            return ;
+            if ( prevProps.selectedDate_object !== this.props.selectedDate_object ){
+                const lastDateInMonth = new Date(
+                    this.props.selectedDate_object.getFullYear(),
+                    this.props.selectedDate_object.getMonth() + 1,
+                    0
+                )
+
+                const daysInMonth = lastDateInMonth.getDate();
+
+                const dateListArr = [];
+
+                for ( let i = 0; i < daysInMonth; i++ ){
+                    const dateObject = new Date(
+                        this.props.selectedDate_object.getFullYear(),
+                        this.props.selectedDate_object.getMonth(),
+                        1 + i
+                    )
+
+                    dateListArr.push(dateObject);
+                }
+
+                this.setState({
+                    dateListArr,
+                    onSelectDate: dateListArr[0]
+                })
+
+                this.slider.slickGoTo(0);
+                this.selectDateHandler(dateListArr[0]);
+            }
         }
     }
 
@@ -120,6 +186,7 @@ class SimpleSlider extends Component {
         this.setState({
             onSelectDate: selectedDate
         })
+
         this.props.setSelectedDate_timeList(null);
         
         this.props.setDateTimeString(selectedDate);
@@ -173,7 +240,6 @@ class SimpleSlider extends Component {
             slidesToShow: 3,
             slidesToScroll: 3,
             swipe: true,
-            adaptiveHeight: true,
             arrows: true,
             nextArrow: <CustomNextArrow />, 
             prevArrow: <CustomPrevArrow />,
@@ -183,16 +249,6 @@ class SimpleSlider extends Component {
                     currentSlideIndex: currentIndex
                 })
             },
-            responsive: [
-                {
-                    breakpoint: 600,
-                    settings: {
-                      slidesToShow: 3,
-                      slidesToScroll: 3,
-                      initialSlide: 0
-                    }
-                }
-            ],
             slickGoTo: this.state.slickGoTo
         };
 

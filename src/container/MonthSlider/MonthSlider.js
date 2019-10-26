@@ -44,14 +44,13 @@ class monthSlider extends Component {
             slidesToShow: 1,
             slidesToScroll: 1,
             swipe: true,
-            adaptiveHeight: true,
             arrows: true,
             nextArrow: <CustomNextArrow />,     
             prevArrow: <CustomPrevArrow />,
             afterChange: (index) => {
                 console.log(this.state.monthsList[index]);
                 this.props.selectMonth(this.state.monthsList[index]);
-            }
+            },
         }
 
         let monthSlides = [];
@@ -59,16 +58,20 @@ class monthSlider extends Component {
         if ( this.state.monthsList.length ){
             monthSlides = this.state.monthsList.map((dateObject) => {
                 return (
-                    <div>{dateObject.getMonth() + 1}月</div>
+                    <div className={classes.MonthSlide}>
+                        {dateObject.getMonth() + 1}月
+                    </div>
                 )
             })
         }
 
         return (
             <div className={classes.MonthSlider}>
+                <div className={classes.container}>
                 <Slider {...settings}>
                     {monthSlides}
                 </Slider>
+                </div>
             </div>
         )
     }

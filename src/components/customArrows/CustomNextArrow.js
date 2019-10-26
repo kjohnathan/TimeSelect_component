@@ -7,14 +7,11 @@ const customNextArrow = (props) => {
 
     return (
         <div 
-            className={classes.ArrowContainer} 
-            onClick={props.onClick}
-        >
-            <span className={classes.nextArrow}></span>
-            {/* <img 
-                src={arrSvg}
-
-                style={{...props.style, height: '25px', display: 'block', width: '25px', margin: '0'}}/> */}
+            className={classes.GridBox} 
+            onClick={props.onClick}>
+            <div className={classes.ArrowContainer}>
+                <span className={classes.nextArrow}></span>
+            </div>
         </div>
     )
 }
