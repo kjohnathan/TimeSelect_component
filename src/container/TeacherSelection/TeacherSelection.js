@@ -27,9 +27,15 @@ class teachderSelection extends Component {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data.infos);
+            const sortedDate = data.infos.sort((a, b) => {
+                const orderNumber_a = Number(a.group.match(/(\d+)/)[0]);
+                const orderNumber_b = Number(b.group.match(/(\d+)/)[0]);
+
+                return orderNumber_a - orderNumber_b;
+            })
+
             this.setState({
-            teachersList: data.infos,
+            teachersList: sortedDate,
             isLoading: false
         })})
         .catch(err => console.log(err));
