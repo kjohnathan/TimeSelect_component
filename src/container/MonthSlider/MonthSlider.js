@@ -68,9 +68,9 @@ class monthSlider extends Component {
         return (
             <div className={classes.MonthSlider}>
                 <div className={classes.container}>
-                <Slider {...settings}>
-                    {monthSlides}
-                </Slider>
+                    <Slider {...settings}>
+                        {monthSlides}
+                    </Slider>
                 </div>
             </div>
         )

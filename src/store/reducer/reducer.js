@@ -11,6 +11,7 @@ const initialState = {
     unfilled_blanks: [],
     masterId: '',   
     masterGid: null,
+    masterName: '',
     step: 'info_page',
     selectedDate_timeList: null,
     datetime_string: null,
@@ -38,18 +39,10 @@ const reducer = ( state = initialState , action ) => {
                     chineseName: action.updatedValue
                 };
             } else if (action.language_of_name === 'phoneNumber'){
-                const pattern = new RegExp('^[0-9]+$');
-                console.log(pattern.test(action.updatedValue));
-                if (!pattern.test(action.updatedValue) && action.updatedValue !== ''){
-                    return {
-                        ...state
-                    }
-                } else {
-                    return {
-                        ...state,
-                        phoneNumber: action.updatedValue
-                    };
-                }
+                return {
+                    ...state,
+                    phoneNumber: action.updatedValue
+                };
             } else if (action.language_of_name === 'introducer'){
                 return {
                     ...state,
@@ -72,6 +65,7 @@ const reducer = ( state = initialState , action ) => {
             return {
                 ...state,
                 masterGid: action.masterGid,
+                masterName: action.masterName,
                 step: 'time_select'
             }
         break;

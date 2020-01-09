@@ -1,10 +1,8 @@
 import React from 'react';
-import arrSvg from './ToRightArr.svg';
 
 import classes from './CustomNextArrow.module.scss';
 
 const customNextArrow = (props) => {
-
     return (
         <div 
             className={classes.GridBox} 

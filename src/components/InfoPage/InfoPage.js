@@ -29,15 +29,24 @@ const infoPage = (props) => {
     ))
 
     const onChangeHandler = (e, type) => {
-        const pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\]<>/?~！@#￥……&*（）——|{}    【】‘；：”“'。，、？]");
-        console.log(pattern.test(e.target.value));
-        if ( pattern.test(e.target.value)){
-            e.target.value = '';
-            return ;
-        } else {
-            console.log('1');
-            console.log(type);
-            props.onChangeHandler(e, type);
+        if ( type === 'phoneNumber' ){
+            const phoneNumber_pattern = new RegExp("^[0-9 +]+$");
+            console.log(phoneNumber_pattern.test(e.target.value));
+            if ( phoneNumber_pattern.test(e.target.value) || e.target.value === ''){
+                props.onChangeHandler(e, type);
+            } else {
+                return ;
+            }
+        }
+
+        if ( type === 'chineseName'){
+            const pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\]<>/?~！@#￥……&*（）——|{}    【】‘；：”“'。，、？]");
+
+            if ( pattern.test(e.target.value) ){
+                return ;
+            } else {
+                props.onChangeHandler(e, type);
+            }
         }
     }
 

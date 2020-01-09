@@ -34,6 +34,7 @@ class App extends Component {
         console.log(datetime_string);
         const saved_data = {
             master_id: master_id,
+            master: this.props.masterName,
             dt: datetime_string,
             line_id: this.props.line_id,
             name: this.props.chineseName,
@@ -206,6 +207,7 @@ const mapStateToProps = state => {
         age: state.age,
         unfilled_blanks: state.unfilled_blanks,
         masterGid: state.masterGid,
+        masterName: state.masterName,
         step: state.step,
         selectedDate_timeList: state.selectedDate_timeList,
         datetime_string: state.datetime_string,

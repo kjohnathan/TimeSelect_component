@@ -14,7 +14,7 @@ const teacherDiv = (props) => {
     return (
         <div 
             className={classes.TeacherDiv}
-            onClick={() => props.onSelectMasterGroup(props.masterGid)}>
+            onClick={() => props.onSelectMasterGroup(props.masterGid, props.groupName)}>
             <img className={classes.TeacherImg} src={'https://hsintian.tk/static/images/' + props.imgSrc} alt={`${props.imgSrc}`}/>
             <div className={classes.TeacherInfo}>
                 <p className={classes.TeacherIntroContent}>{props.teacherIntro}</p>

@@ -241,7 +241,7 @@ class SimpleSlider extends Component {
             slidesToScroll: 3,
             swipe: true,
             arrows: true,
-            nextArrow: <CustomNextArrow />, 
+            nextArrow: <CustomNextArrow />,     
             prevArrow: <CustomPrevArrow />,
             afterChange: (currentIndex) => {
                 console.log(currentIndex);

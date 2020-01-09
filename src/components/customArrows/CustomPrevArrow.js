@@ -1,5 +1,4 @@
 import React from 'react';
-import arrSvg from './ToLeftArr.svg';
 
 import classes from './CustomPrevArrow.module.scss';
 

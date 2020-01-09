@@ -3,9 +3,12 @@ import React, { Component } from 'react';
 import TeacherDiv from '../../components/TeacherDiv/TeacherDiv';
 import Loading from '../../UI/Loading/Loading';
 import Button from '../../UI/Button/Button';
+import Spinner from '../../UI/Spinner/spinner';
+import Aux from '../../hoc/aux';
 
 import classes from './TeacherSelection.module.scss';
 import selectMasterPic from './selectMaster.png';
+import { encode } from 'punycode';
 
 class teachderSelection extends Component {
     constructor(props){
@@ -14,7 +17,8 @@ class teachderSelection extends Component {
 
     state = {
         teachersList: [],
-        isLoading: false
+        isLoading: false,
+        picLoaded: false
     }
 
     componentDidMount(){
@@ -27,20 +31,30 @@ class teachderSelection extends Component {
         })
         .then(res => res.json())
         .then(data => {
-            const sortedDate = data.infos.sort((a, b) => {
-                const orderNumber_a = Number(a.group.match(/(\d+)/)[0]);
-                const orderNumber_b = Number(b.group.match(/(\d+)/)[0]);
-
-                return orderNumber_a - orderNumber_b;
-            })
+            console.log(data);
 
             this.setState({
-            teachersList: sortedDate,
-            isLoading: false
-        })})
+                teachersList: data.infos,
+                isLoading: false
+            })
+        })
         .catch(err => console.log(err));
 
         console.log('mounted');
+    }
+
+    onLoadHandler = () => {
+        console.log('loaded');
+        this.setState({
+            picLoaded: true
+        })
+    }
+
+    onLoadErrorHandler = () => {
+        console.log('error');
+        this.setState({
+            picLoaded: true
+        })
     }
 
     render(){
@@ -63,9 +77,8 @@ class teachderSelection extends Component {
             })
         }
 
-        return (
-            <div className={classes.TeacherSelectionPage}>
-                <img className={classes.BannerImg} src='/static/appointment/media/selectMaster.png' />
+        let pageContent = (
+            <Aux>
                 <div className={classes.ButtonContainer}>
                     <Button
                             className={classes.PrevStepButton}
@@ -74,9 +87,22 @@ class teachderSelection extends Component {
                     </Button>
                 </div>
                 {this.state.isLoading?
-                    <Loading />: 
+                    <Loading />:
                     teacherDivs
                 }
+            </Aux>
+        )
+
+        // '/static/appointment/media/selectMaster.png'
+        return (
+            <div className={classes.TeacherSelectionPage}>
+                <img 
+                    onLoad={this.onLoadHandler.bind(this)}
+                    onError={() => console.log('error')}
+                    className={classes.BannerImg} 
+                    src='/static/appointment/media/selectMaster.png' />
+                { this.state.picLoaded ? 
+                    pageContent: null }
             </div>
         )
     }
