@@ -62,6 +62,7 @@ const reducer = ( state = initialState , action ) => {
             }
 
         case actionTypes.SELECT_MASTER_GROUP:
+            console.log(action)
             return {
                 ...state,
                 masterGid: action.masterGid,

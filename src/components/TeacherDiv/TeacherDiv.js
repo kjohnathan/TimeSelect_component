@@ -3,13 +3,18 @@ import React from 'react';
 import classes from './TeacherDiv.module.scss';
 
 const teacherDiv = (props) => {
-    console.log(props.imgSrc);
-    console.log('https://hsintian.tk/static/profile_pic/' + props.imgSrc);
 
     const lineBreak = (script) => {
-        script.replace('\r\n', '\n')
-        return script;
+        const script_arr = script.split('\r\n');
+        console.log(script_arr);
+        return script_arr;
     }
+
+    const intro_li = lineBreak(props.teacherIntro).map((intro) => {
+        return (
+            <li>{intro}</li>
+        )
+    });
 
     return (
         <div 
@@ -17,7 +22,10 @@ const teacherDiv = (props) => {
             onClick={() => props.onSelectMasterGroup(props.masterGid, props.groupName)}>
             <img className={classes.TeacherImg} src={'https://hsintian.tk/static/images/' + props.imgSrc} alt={`${props.imgSrc}`}/>
             <div className={classes.TeacherInfo}>
-                <p className={classes.TeacherIntroContent}>{props.teacherIntro}</p>
+                <ol className={classes.TeacherIntroContent} type='A'>
+                    {/* {props.teacherIntro} */}
+                    {intro_li}
+                </ol>
             </div>
         </div>
     )

@@ -63,15 +63,15 @@ const infoPage = (props) => {
                     {   props.unfilled_blanks.find((ele) => { return ele === 'chineseName' }) ?
                         <p>請填入您的中文名字</p>: null
                     }
+                    <input
+                        required
+                        autoComplete='off'
+                        placeholder='請輸入您的姓名'
+                        value={props.chineseName}
+                        name='chineseName'
+                        className={classes.InfoInput}
+                        onChange={(e) => onChangeHandler(e, 'chineseName')}/>
                 </div>
-                <input
-                    required
-                    autoComplete='off'
-                    placeholder='請輸入您的姓名'
-                    value={props.chineseName}
-                    name='chineseName'
-                    className={classes.InfoInput}
-                    onChange={(e) => onChangeHandler(e, 'chineseName')}/>
                 <div className={classes.infoTitle}>
                     <label>
                         手機號碼
@@ -79,31 +79,29 @@ const infoPage = (props) => {
                     {   props.unfilled_blanks.find((ele) => { return ele === 'phoneNumber' }) ?
                         <p>請填入您的手機號碼</p>: null
                     }
+                    <input
+                        required
+                        autoComplete='off'
+                        placeholder='請輸入您的手機號碼'
+                        value={props.phoneNumber}
+                        name='phoneNumber'
+                        className={classes.InfoInput}
+                        onChange={(e) => onChangeHandler(e, 'phoneNumber')}/>
                 </div>
-                <input
-                    required
-                    autoComplete='off'
-                    placeholder='請輸入您的手機號碼'
-                    value={props.phoneNumber}
-                    name='phoneNumber'
-                    className={classes.InfoInput}
-                    onChange={(e) => onChangeHandler(e, 'phoneNumber')}/>
                 <div className={classes.infoTitle}>
                     <label>介紹人</label>
+                    <input 
+                        autoComplete='off'
+                        placeholder='若無則不填'
+                        className={classes.InfoInput}
+                        onChange={(e) => onChangeHandler(e, 'introducer')}/>
                 </div>
-                <input 
-                    autoComplete='off'
-                    placeholder='若無則不填'
-                    className={classes.InfoInput}
-                    onChange={(e) => onChangeHandler(e, 'introducer')}/>
                 <div className={classes.selectionBar}>
                     <select 
                         style={
                             props.unfilled_blanks.find((info) => {
                                 return info === 'gender'
-                            })?
-
-                            {color: 'red'}:null
+                            })? {color: 'red'} : null
                         }
                         onChange={(e) => props.dropDownSelectHandler('gender', e.target.value)}
                         value={props.gender || '性別'}>
@@ -116,9 +114,7 @@ const infoPage = (props) => {
                         style={
                             props.unfilled_blanks.find((info) => {
                                 return info === 'age'
-                            })?
-
-                            {color: 'red'}:null
+                            })? {color: 'red'} : null
                         }
                         className={classes.rightSelect}
                         onChange={(e) => props.dropDownSelectHandler('age', e.target.value)}
@@ -132,9 +128,7 @@ const infoPage = (props) => {
                         style={
                             props.unfilled_blanks.find((info) => {
                                 return info === 'city'
-                            })?
-
-                            {color: 'red'}:null
+                            })? {color: 'red'} : null
                         }
                         onChange={(e) => props.dropDownSelectHandler('city', e.target.value)} 
                         value={props.city || '城市'}>
@@ -145,9 +139,7 @@ const infoPage = (props) => {
                         style={
                             props.unfilled_blanks.find((info) => {
                                 return info === 'district'
-                            })?
-
-                            {color: 'red'}:null
+                            })? {color: 'red'} : null
                         }                    
                         className={classes.rightSelect}
                         onChange={(e) => props.dropDownSelectHandler('district', e.target.value)} 

@@ -59,8 +59,6 @@ class teachderSelection extends Component {
 
     render(){
         let teacherDivs = [];
-        console.log(this.props);
-        console.log(this.state);
     
         if (this.state.teachersList.length !== 0){
             this.state.teachersList.forEach((masterGrp, index) => {
@@ -93,14 +91,15 @@ class teachderSelection extends Component {
             </Aux>
         )
 
-        // '/static/appointment/media/selectMaster.png'
         return (
             <div className={classes.TeacherSelectionPage}>
                 <img 
                     onLoad={this.onLoadHandler.bind(this)}
                     onError={() => console.log('error')}
                     className={classes.BannerImg} 
-                    src='/static/appointment/media/selectMaster.png' />
+                    // src='/static/appointment/media/selectMaster.png' 
+                    src={selectMasterPic}
+                />
                 { this.state.picLoaded ? 
                     pageContent: null }
             </div>

@@ -26,6 +26,7 @@ export const DROP_DOWN_SELECT = (selection_name, value) => {
 }
 
 export const onSelectMasterGroup = (masterGid, masterName) => {
+    console.log(masterName);
     return {
         type: actionTypes.SELECT_MASTER_GROUP,
         masterGid: masterGid,

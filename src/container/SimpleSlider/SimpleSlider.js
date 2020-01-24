@@ -76,6 +76,8 @@ class SimpleSlider extends Component {
                 start_date: datetime_string
             }
 
+            console.log(params);
+
             let esc = encodeURIComponent;
             const queryString = Object.keys(params)
                                     .map((ele) => esc(ele) + '=' + esc(params[ele])).join('&');
@@ -91,7 +93,8 @@ class SimpleSlider extends Component {
             .then(data => {
                 this.setState({
                     selectedGrp_datetime: data.infos.datetime
-                })
+                });
+                
                 this.props.setSelectedDate_timeList(intializeTimeList(currentDateObject, data.infos.datetime));
             })
             .catch(err => console.log(err))
@@ -206,6 +209,7 @@ class SimpleSlider extends Component {
                 day: 5,
                 start_date: datetime_string
             }
+            console.log(params);
 
             let esc = encodeURIComponent;
             const queryString = Object.keys(params)

@@ -33,7 +33,7 @@ class TimeSelection extends Component {
                 timePeriodDivs.push(
                     <div className={classes.TimePeriodDiv}>
                         <div className={classes.InfoDiv}>
-                            <p>師傅：{time.master_name}</p>
+                            <p>{time.master_name}</p>
                             <p>時間：{time.time}</p>
                         </div>
                         <p

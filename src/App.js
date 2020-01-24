@@ -34,7 +34,6 @@ class App extends Component {
         console.log(datetime_string);
         const saved_data = {
             master_id: master_id,
-            master: this.props.masterName,
             dt: datetime_string,
             line_id: this.props.line_id,
             name: this.props.chineseName,
@@ -72,7 +71,8 @@ class App extends Component {
                     line_id: data.info.line_id,
                     reservation_id: data.info.reservation_id,
                     name: data.info.name,
-                    datetime: reservation_post_datetime
+                    datetime: reservation_post_datetime,
+                    master: this.props.masterName
                 }
                 const reservationFormData = new FormData();
                 for ( let ele in reservationObj){
@@ -223,7 +223,7 @@ const mapDispatchToProps = dispatch => {
         setInfoContent: (infoType, updatedValue) => dispatch(actions.setInfoContent(infoType, updatedValue)),
         onChangeHandler: (e, language_of_name) => dispatch(actions.onChangeHandler(e, language_of_name)),
         dropDownSelectHandler: (selection_name, value) => dispatch(actions.DROP_DOWN_SELECT(selection_name, value)),
-        onSelectMasterGroup: (teacherName) => dispatch(actions.onSelectMasterGroup(teacherName)),
+        onSelectMasterGroup: (teacherName, masterName) => dispatch(actions.onSelectMasterGroup(teacherName, masterName)),
         nextStep: () => dispatch(actions.nextStep()),
         prevStep: () => dispatch(actions.prevStep()),
         setDateTimeString: (datetimestring) => dispatch(actions.setDateTimeString(datetimestring)),

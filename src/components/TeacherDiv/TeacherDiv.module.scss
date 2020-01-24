@@ -1,6 +1,6 @@
 .TeacherDiv {
     display: grid;
-    grid-template-columns: 40% 60%;
+    grid-template-columns: minmax(100px, 20%) 1fr;
     height: 150px;
     border-top: 1px solid #ccc;
     z-index: 100;
@@ -23,7 +23,8 @@
 }
 
 .TeacherIntroContent {
-    font-size: 12px;
+    line-height: 20px;
+    font-size: 15px;
     white-space: pre-wrap;
     margin: 0 10px 0 10px;
     text-align: left;
