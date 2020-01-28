@@ -2,6 +2,8 @@ import React from 'react';
 
 import classes from './CustomSlide.module.scss';
 
+import converToString from '../../container/SimpleSlider/convert_dateObject_to_dateString';
+
 const customSlide = (props) => {
     const ch_dayArr = [
         '日',
@@ -15,7 +17,10 @@ const customSlide = (props) => {
 
     const currentDay = ch_dayArr[props.dateObject.getDay()];
 
-    if (props.dateObject === props.onSelectDate){
+    console.log(props.dateObject, props.selectedDate);
+    console.log(props.dateObject === props.selectedDate);
+
+    if (converToString(props.dateObject) === converToString(props.selectedDate)){
         console.log(props.dateObject);
         console.log(props.onSelectDate);
         return (
@@ -41,11 +46,13 @@ const customSlide = (props) => {
             <div 
                 className={classes.Slide}
                 onClick={() => {
-                    console.log(props.dateObject);
-                    console.log(props.slideIndex);
-                    props.selectDateHandler(props.dateObject);
-                    props.setCurrentIndex(props.slideIndex - 1)
-            }}>
+                        console.log(props.dateObject);
+                        console.log(props.slideIndex);
+                        props.selectDateHandler(props.dateObject);
+                        props.setCurrentIndex(props.slideIndex - 1);
+                    }
+                }
+                >
                 <h5>
                     {
                         `${props.dateObject.getMonth()+1}` + '/' +

@@ -18,23 +18,23 @@ class monthSlider extends Component {
         monthsList: []
     }
 
-    componentDidMount(){
-        const monthsList = []
+    // componentDidMount(){
+    //     const monthList = []
 
-        if ( this.props.currentDate_object ){
-            for ( let i = 0; i < 20; i++){
-                const date_object = new Date(
-                    this.props.currentDate_object.getFullYear(),
-                    this.props.currentDate_object.getMonth() + i,
-                    1
-                )
+    //     if ( this.props.currentDate_object ){
+    //         for ( let i = 0; i < 20; i++){
+    //             const date_object = new Date(
+    //                 this.props.currentDate_object.getFullYear(),
+    //                 this.props.currentDate_object.getMonth() + i,
+    //                 1
+    //             )
                 
-                monthsList.push(date_object)
-            }
+    //             monthsList.push(date_object)
+    //         }
 
-            this.setState({ monthsList });
-        }
-    }
+    //         this.setState({ monthsList });
+    //     }
+    // }
 
     render(){
         const settings = {
@@ -48,18 +48,18 @@ class monthSlider extends Component {
             nextArrow: <CustomNextArrow />,     
             prevArrow: <CustomPrevArrow />,
             afterChange: (index) => {
-                console.log(this.state.monthsList[index]);
-                this.props.selectMonth(this.state.monthsList[index]);
+                console.log(this.props.monthList[index]);
+                this.props.selectMonthHandler(this.props.monthList[index]);
             },
         }
 
         let monthSlides = [];
 
-        if ( this.state.monthsList.length ){
-            monthSlides = this.state.monthsList.map((dateObject) => {
+        if ( this.props.monthList.length ){
+            monthSlides = this.props.monthList.map((month) => {
                 return (
                     <div className={classes.MonthSlide}>
-                        {dateObject.getMonth() + 1}月
+                        {month}月
                     </div>
                 )
             })
