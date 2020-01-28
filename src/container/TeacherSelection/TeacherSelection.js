@@ -41,7 +41,7 @@ class teachderSelection extends Component {
         .catch(err => console.log(err));
 
         console.log('mounted');
-    }
+    };
 
     onLoadHandler = () => {
         console.log('loaded');
@@ -54,7 +54,7 @@ class teachderSelection extends Component {
         console.log('error');
         this.setState({
             picLoaded: true
-        })
+        });
     }
 
     render(){

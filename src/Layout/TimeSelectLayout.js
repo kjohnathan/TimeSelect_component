@@ -8,6 +8,8 @@ import BackDrop from '../UI/Backdrop/Backdrop';
 import Button from '../UI/Button/Button';
 import Aux from '../hoc/aux';
 
+import convertToDateString from '../container/SimpleSlider/convert_dateObject_to_dateString';
+
 import classes from './TimeSelectLayout.module.scss';
 
 class TimeSelectLayout extends Component {
@@ -29,10 +31,10 @@ class TimeSelectLayout extends Component {
             this.setState({ selectedDate_object: month })
             console.log(month);
         }
-    }
+    };
     
     render(){
-        console.log(this.state.selectedDate_object);
+        console.log(this.props);
         return (
             <div className={classes.timeSelectLayout}>
                 {
