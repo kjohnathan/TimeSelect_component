@@ -29,6 +29,7 @@ class App extends Component {
 
     makeReservation = (master_id, time) => {
         this.setState({ isPending: true })
+        console.log(this.props.datetime_string);
         const datetime_string = convertToString(this.props.datetime_string) + time;
         
         console.log(datetime_string);

@@ -66,6 +66,8 @@ class TimeSelectLayout extends Component {
             selectedDate: date,
             timeList: targetDate.time_list
         })
+
+        this.props.setDateTimeString(datetime_string);
     }
 
     componentDidMount(){
@@ -191,7 +193,7 @@ class TimeSelectLayout extends Component {
                     // datetime_string={this.props.datetime_string}
                     selectedDate_timeList={this.state.timeList}
                     // onSelectClassTimeHandler={this.props.onSelectClassTimeHandler}
-                    // makeReservation={this.props.makeReservation}
+                    makeReservation={this.props.makeReservation}
                 />
             </div>
         )
