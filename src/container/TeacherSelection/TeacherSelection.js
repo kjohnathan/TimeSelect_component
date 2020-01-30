@@ -97,8 +97,8 @@ class teachderSelection extends Component {
                     onLoad={this.onLoadHandler.bind(this)}
                     onError={() => console.log('error')}
                     className={classes.BannerImg} 
-                    // src='/static/appointment/media/selectMaster.png' 
-                    src={selectMasterPic}
+                    src='/static/appointment/media/selectMaster.png' 
+                    // src={selectMasterPic}
                 />
                 { this.state.picLoaded ? 
                     pageContent: null }

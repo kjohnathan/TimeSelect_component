@@ -28,8 +28,9 @@ class App extends Component {
     }
 
     makeReservation = (master_id, time) => {
-        this.setState({ isPending: true })
         console.log(this.props.datetime_string);
+        this.setState({ isPending: true })
+
         const datetime_string = convertToString(this.props.datetime_string) + time;
         
         console.log(datetime_string);
@@ -44,7 +45,7 @@ class App extends Component {
             age: this.props.age,
             city: this.props.city,
             district: this.props.district
-        }
+        };
         console.log(saved_data);
         const reservation_data = new FormData();
         for ( let ele in saved_data){
@@ -75,6 +76,7 @@ class App extends Component {
                     datetime: reservation_post_datetime,
                     master: this.props.masterName
                 }
+                console.log(reservationObj);
                 const reservationFormData = new FormData();
                 for ( let ele in reservationObj){
                     reservationFormData.append(ele, reservationObj[ele]);

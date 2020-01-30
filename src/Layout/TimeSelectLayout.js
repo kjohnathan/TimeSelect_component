@@ -37,7 +37,9 @@ class TimeSelectLayout extends Component {
         this.state.timedata.infos.datetime.forEach((date) => {
             const dateObject = converToDateObject(date.date);
             if ((dateObject.getMonth() + 1) === month){
-                dateList.push(dateObject);
+                if (date.time_list.length){
+                    dateList.push(dateObject);
+                }
             }
         });
 
@@ -67,7 +69,7 @@ class TimeSelectLayout extends Component {
             timeList: targetDate.time_list
         })
 
-        this.props.setDateTimeString(datetime_string);
+        this.props.setDateTimeString(date);
     }
 
     componentDidMount(){
@@ -111,7 +113,11 @@ class TimeSelectLayout extends Component {
                 data.infos.datetime.forEach((date) => {
                     const dateObject = converToDateObject(date.date);
                     if ((dateObject.getMonth() + 1) === (converToDateObject(data.infos.datetime[0].date).getMonth() + 1)){
-                        dateList.push(dateObject);
+                        if (date.time_list.length){
+                            dateList.push(dateObject);
+                            console.log(dateObject);
+                        }
+                        console.log(date);
                     }
                 })
 
@@ -123,8 +129,10 @@ class TimeSelectLayout extends Component {
                     selectedMonth: converToDateObject(data.infos.datetime[0].date).getMonth() + 1,
                     selectedDate: converToDateObject(data.infos.datetime[0].date),
                     dateList,
-                    timeList: data.infos.datetime[0].time_list
+                    timeList: data.infos.datetime[0].time_list,
                 });
+
+                this.props.setDateTimeString(converToDateObject(data.infos.datetime[0].date));
             })
             .catch(err => console.log(err))
         };
