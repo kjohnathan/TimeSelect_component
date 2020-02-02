@@ -19,36 +19,31 @@ class TimeSelectLayout extends Component {
     }
 
     state = {
-        currentDate_object: new Date(),
         selectedDate_object: new Date(),
         timedata: [],
         monthList: '',
-        dateList: '',
+        dateList: [],
         selectedMonth: '',
         selectedDate: '',
-        timeList: ''
+        timeList: '',
+        datetime_object: {}
     }
 
     selectMonthHandler = (month) => {
         console.log(month);
 
-        const dateList = [];
-
-        this.state.timedata.infos.datetime.forEach((date) => {
-            const dateObject = converToDateObject(date.date);
-            if ((dateObject.getMonth() + 1) === month){
-                if (date.time_list.length){
-                    dateList.push(dateObject);
-                }
-            }
-        });
+        const dateList = this.state.datetime_object[month].map((date) => {
+            return converToDateObject(date.date);
+        })
 
         console.log(dateList);
+        console.log(this.state.datetime_object[month][0].time_list);
 
         this.setState({
             selectedMonth: month,
             dateList,
-            selectedDate: dateList[0]
+            selectedDate: dateList[0],
+            timeList: this.state.datetime_object[month][0].time_list
         });
     };
 
@@ -101,35 +96,60 @@ class TimeSelectLayout extends Component {
                 const firstDate = converToDateObject(data.infos.datetime[0].date);
                 console.log(firstDate.getMonth() + 1);
 
-                const monthList = [];
+                const datetime_object = new Object();
+                
                 data.infos.datetime.forEach((date) => {
                     const dateObject = converToDateObject(date.date);
-                    if (!monthList.includes(dateObject.getMonth() + 1)){
-                        monthList.push(dateObject.getMonth() + 1);
+                    const month_of_date = dateObject.getMonth() + 1;
+                    
+                    if (!datetime_object[month_of_date]){
+                        datetime_object[month_of_date] = [];
+
+                        if (date.time_list.length){
+                            datetime_object[month_of_date].push(date);
+                        }
+                    } else {
+                        if (date.time_list.length){
+                            datetime_object[month_of_date].push(date);
+                        }
                     }
                 });
 
-                const dateList = [];
-                data.infos.datetime.forEach((date) => {
-                    const dateObject = converToDateObject(date.date);
-                    if ((dateObject.getMonth() + 1) === (converToDateObject(data.infos.datetime[0].date).getMonth() + 1)){
-                        if (date.time_list.length){
-                            dateList.push(dateObject);
-                            console.log(dateObject);
-                        }
-                        console.log(date);
-                    }
-                })
+                console.log(datetime_object);
+
+                const monthList = [];
+                for (let key in datetime_object){
+                    monthList.push(key);
+                }
+
+                console.log(monthList);
+                console.log(datetime_object[monthList[0]][0].date);
+                // const dateList = [...datetime_object[monthList[0]]];
+                // const dateList = [];
+                // data.infos.datetime.forEach((date) => {
+                //     const dateObject = converToDateObject(date.date);
+                //     if ((dateObject.getMonth() + 1) === (converToDateObject(data.infos.datetime[0].date).getMonth() + 1)){
+                //         if (date.time_list.length){
+                //             dateList.push(dateObject);
+                //             console.log(dateObject);
+                //         }
+                //         console.log(date);
+                //     }
+                // });
+                const dateList = datetime_object[monthList[0]].map((date) => {
+                    return converToDateObject(date.date);
+                });
 
                 console.log(dateList);
 
                 this.setState({
                     timedata: data,
                     monthList,
-                    selectedMonth: converToDateObject(data.infos.datetime[0].date).getMonth() + 1,
-                    selectedDate: converToDateObject(data.infos.datetime[0].date),
+                    selectedMonth: monthList[0],
+                    selectedDate: converToDateObject(datetime_object[monthList[0]][0].date),
                     dateList,
                     timeList: data.infos.datetime[0].time_list,
+                    datetime_object
                 });
 
                 this.props.setDateTimeString(converToDateObject(data.infos.datetime[0].date));
@@ -200,6 +220,7 @@ class TimeSelectLayout extends Component {
                     // isFetchingTime={this.props.isFetchingTime}
                     // datetime_string={this.props.datetime_string}
                     selectedDate_timeList={this.state.timeList}
+                    no_res={!this.state.dateList.length}
                     // onSelectClassTimeHandler={this.props.onSelectClassTimeHandler}
                     makeReservation={this.props.makeReservation}
                 />
