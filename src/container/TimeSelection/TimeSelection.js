@@ -44,12 +44,16 @@ class TimeSelection extends Component {
                     </div>
                 )
             })
-        } else {
-            timePeriodDivs = [
+        }
+
+        let no_res = null;
+
+        if (this.props.no_res){
+            no_res = (
                 <div>
-                    <h3>此天無可預約時段</h3>
+                    <h3>本月無可預約時段</h3>
                 </div>
-            ]
+            )
         }
 
         if ( this.props.selectedDate_timeList === null || this.props.isFetchingTime === true ){
@@ -62,6 +66,7 @@ class TimeSelection extends Component {
             return (
                 <div className={classes.TimeDivsContainer}>
                     {timePeriodDivs}
+                    {no_res}
                 </div>
             )
         }

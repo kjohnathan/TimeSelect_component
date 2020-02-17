@@ -6,13 +6,35 @@ const teacherDiv = (props) => {
 
     const lineBreak = (script) => {
         const script_arr = script.split('\r\n');
-        console.log(script_arr);
         return script_arr;
     }
 
-    const intro_li = lineBreak(props.teacherIntro).map((intro) => {
+    const intro_li = lineBreak(props.teacherIntro).map((intro, index) => {
+        let intro_words = null;
+        switch(index){
+            case 0: 
+                intro_words = intro.replace('A:', ' ')
+                break;
+            case 1:
+                intro_words = intro.replace('B:', ' ')
+                break;
+            case 2:
+                intro_words = intro.replace('C:', ' ');
+                break;
+            case 3:
+                intro_words = intro.replace('D:', ' ');
+                break;
+            case 4:
+                intro_words = intro.replace('E:', ' ')
+                break;
+            case 5:
+                intro_words = intro.replace('F:', ' ')
+                break;
+            default:
+                return;
+        }
         return (
-            <li>{intro}</li>
+            <li>{intro_words}</li>
         )
     });
 

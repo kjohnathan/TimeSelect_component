@@ -61,3 +61,13 @@
     left: 20px;
     top: 20px;
 }
+
+.ErrorMessage {
+    z-index: 200;
+    position: fixed;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 15px 10px 15px;
+}

@@ -7,7 +7,6 @@ import Button from '../../UI/Button/Button';
 import classes from './InfoPage.module.scss';
 
 const infoPage = (props) => {
-    console.log(props)
     const cities_arr = Object.keys(cities);
 
     const cities_options = cities_arr.map((city) => (
@@ -31,7 +30,6 @@ const infoPage = (props) => {
     const onChangeHandler = (e, type) => {
         if ( type === 'phoneNumber' ){
             const phoneNumber_pattern = new RegExp("^[0-9 +]+$");
-            console.log(phoneNumber_pattern.test(e.target.value));
             if ( phoneNumber_pattern.test(e.target.value) || e.target.value === ''){
                 props.onChangeHandler(e, type);
             } else {

@@ -7,7 +7,7 @@ import Spinner from '../../UI/Spinner/spinner';
 import Aux from '../../hoc/aux';
 
 import classes from './TeacherSelection.module.scss';
-import selectMasterPic from './selectMaster.png';
+import selectMasterPic from './selectMaster.jpg';
 import { encode } from 'punycode';
 
 class teachderSelection extends Component {
@@ -31,7 +31,6 @@ class teachderSelection extends Component {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
 
             this.setState({
                 teachersList: data.infos,
@@ -39,19 +38,15 @@ class teachderSelection extends Component {
             })
         })
         .catch(err => console.log(err));
-
-        console.log('mounted');
     };
 
     onLoadHandler = () => {
-        console.log('loaded');
         this.setState({
             picLoaded: true
         })
     }
 
     onLoadErrorHandler = () => {
-        console.log('error');
         this.setState({
             picLoaded: true
         });
@@ -97,8 +92,8 @@ class teachderSelection extends Component {
                     onLoad={this.onLoadHandler.bind(this)}
                     onError={() => console.log('error')}
                     className={classes.BannerImg} 
-                    src='/static/appointment/media/selectMaster.png' 
-                    // src={selectMasterPic}
+                    src='/static/appointment/media/selectMaster.jpg' 
+                    // src={selectMasterPic || '/static/appointment/media/selectMaster.png' }
                 />
                 { this.state.picLoaded ? 
                     pageContent: null }

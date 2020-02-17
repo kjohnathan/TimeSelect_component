@@ -24,16 +24,12 @@ const initialState = {
 const reducer = ( state = initialState , action ) => {
     switch(action.type){
         case actionTypes.SET_INFO_CONTENT: 
-            console.log(action.infoType);
-            console.log(action.updatedValue);
             const cloned_state = { ... state };
             cloned_state[action.infoType] = action.updatedValue;
-            console.log(cloned_state);
             return cloned_state;
 
         case actionTypes.CHANGE_NAME:
             if (action.language_of_name === 'chineseName'){
-                console.log(action.updatedValue);
                 return {
                     ...state,
                     chineseName: action.updatedValue
@@ -54,15 +50,12 @@ const reducer = ( state = initialState , action ) => {
         break;
         
         case actionTypes.DROP_DOWN_SELECT:
-            console.log(action.value);
-            console.log(action.selection_name);
             return {
                 ...state,
                 [action.selection_name]: action.value
             }
 
         case actionTypes.SELECT_MASTER_GROUP:
-            console.log(action)
             return {
                 ...state,
                 masterGid: action.masterGid,
@@ -83,14 +76,11 @@ const reducer = ( state = initialState , action ) => {
                         }
                     })
 
-                    console.log(unfilled_infos);
-
                     if (!unfilled_infos.length){
                         return 'passed';
                     } else {
                         return unfilled_infos;
                     }
-                    console.log('validating');
                 }
 
                 if ( info_validate() === 'passed' ){
@@ -99,7 +89,6 @@ const reducer = ( state = initialState , action ) => {
                         step: 'teacher_select'
                     }
                 } else {
-                    console.log(info_validate())
                     return {
                         ...state,
                         unfilled_blanks: info_validate()

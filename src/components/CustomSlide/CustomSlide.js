@@ -17,12 +17,8 @@ const customSlide = (props) => {
 
     const currentDay = ch_dayArr[props.dateObject.getDay()];
 
-    console.log(props.dateObject, props.selectedDate);
-    console.log(props.dateObject === props.selectedDate);
 
     if (converToString(props.dateObject) === converToString(props.selectedDate)){
-        console.log(props.dateObject);
-        console.log(props.onSelectDate);
         return (
             <div 
                 className={classes.CurrentDateSlide}

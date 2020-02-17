@@ -19,7 +19,8 @@ class App extends Component {
     }
     
     state = {
-        isPending: false
+        isPending: false,
+        error: null
     }
 
     componentDidMount(){
@@ -91,9 +92,20 @@ class App extends Component {
                     console.log(err);
                     this.props.setErrorMsg(`${err}`)
                 })
+            } else {
+                this.setState({
+                    error: data.error_message,
+                    isPending: false
+                })
             }
         })
         .catch(err => console.log(err))
+    }
+
+    backdropHandler = () => {
+        this.setState({
+            error: null
+        })
     }
 
     initializeLIFF(){
@@ -138,7 +150,7 @@ class App extends Component {
     }
 
     render(){
-        console.log(this.props);
+        console.log(this.state.error)
         if (this.props.step === 'info_page'){
             return (
                 <div className={classes.App}>
@@ -177,6 +189,8 @@ class App extends Component {
                     <div className={classes.App}>
                         <TimeSelectLayout
                             isPending={this.state.isPending}
+                            error={this.state.error}
+                            backdropHandler={this.backdropHandler.bind(this)}
                             isFetchingTime={this.props.isFetchingTime}
                             prevStep={this.props.prevStep}
                             masterGid={this.props.masterGid}

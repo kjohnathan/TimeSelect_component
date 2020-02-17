@@ -26,7 +26,8 @@ class TimeSelectLayout extends Component {
         selectedMonth: '',
         selectedDate: '',
         timeList: '',
-        datetime_object: {}
+        datetime_object: {},
+        loading: true
     }
 
     selectMonthHandler = (month) => {
@@ -35,16 +36,25 @@ class TimeSelectLayout extends Component {
         const dateList = this.state.datetime_object[month].map((date) => {
             return converToDateObject(date.date);
         })
-
         console.log(dateList);
-        console.log(this.state.datetime_object[month][0].time_list);
 
-        this.setState({
-            selectedMonth: month,
-            dateList,
-            selectedDate: dateList[0],
-            timeList: this.state.datetime_object[month][0].time_list
-        });
+        if (dateList.length){
+            console.log(dateList[0])
+            this.setState({
+                selectedMonth: month,
+                dateList,
+                selectedDate: dateList[0],
+                timeList: this.state.datetime_object[month][0].time_list
+            });
+
+            this.props.setDateTimeString(dateList[0])
+        } else {
+            this.setState({
+                selectedMonth: month,
+                dateList,
+                timeList: []
+            })
+        }
     };
 
     selectDateHandler = (date, index) => {
@@ -123,7 +133,7 @@ class TimeSelectLayout extends Component {
                 }
 
                 console.log(monthList);
-                console.log(datetime_object[monthList[0]][0].date);
+                console.log(datetime_object[monthList[0]][0]);
                 // const dateList = [...datetime_object[monthList[0]]];
                 // const dateList = [];
                 // data.infos.datetime.forEach((date) => {
@@ -142,17 +152,29 @@ class TimeSelectLayout extends Component {
 
                 console.log(dateList);
 
-                this.setState({
-                    timedata: data,
-                    monthList,
-                    selectedMonth: monthList[0],
-                    selectedDate: converToDateObject(datetime_object[monthList[0]][0].date),
-                    dateList,
-                    timeList: data.infos.datetime[0].time_list,
-                    datetime_object
-                });
+                if (!dateList.length){
+                    this.setState({
+                        timedata: data,
+                        monthList,
+                        selectedMonth: monthList[0],
+                        dateList,
+                        datetime_object,
+                        loading: false
+                    })
+                } else {
+                    this.setState({
+                        timedata: data,
+                        monthList,
+                        selectedMonth: monthList[0],
+                        selectedDate: converToDateObject(datetime_object[monthList[0]][0].date),
+                        dateList,
+                        timeList: datetime_object[monthList[0]][0].time_list,
+                        datetime_object,
+                        loading: false
+                    });
 
-                this.props.setDateTimeString(converToDateObject(data.infos.datetime[0].date));
+                    this.props.setDateTimeString(converToDateObject(datetime_object[monthList[0]][0].date));
+                }
             })
             .catch(err => console.log(err))
         };
@@ -166,6 +188,14 @@ class TimeSelectLayout extends Component {
     
     render(){
         console.log(this.props);
+        if (this.state.loading){
+            return (
+                <div className={classes.timeSelectLayout}>
+                    <Spinner />
+                </div>
+            )
+        }
+
         return (
             <div className={classes.timeSelectLayout}>
                 {
@@ -177,7 +207,18 @@ class TimeSelectLayout extends Component {
                         </Aux>
                     ): null
                 }
-
+                {
+                    this.props.error?
+                    (
+                        <Aux>
+                            <BackDrop onClickHandler={this.props.backdropHandler}/>
+                            <div className={classes.ErrorMessage}>
+                                <p>{this.props.error}</p>
+                            </div>
+                        </Aux>
+                    ): null
+                }
+                
                 <div className={classes.TitleBar}>
                     <div className={classes.ButtonContainer}>
                         <Button
@@ -203,25 +244,14 @@ class TimeSelectLayout extends Component {
                 </div>
                 <div className={classes.DateSliderContainer}>
                     <SimpleSlider 
+                        loading={this.state.loading}
                         dateList={this.state.dateList}
                         selectedDate={this.state.selectedDate}
                         selectDateHandler={this.selectDateHandler.bind(this)}/>
-                    {/* <SimpleSlider 
-                        currentDate_object={this.state.currentDate_object}
-                        selectedDate_object={this.state.selectedDate_object}
-                        setDateTimeString={this.props.setDateTimeString}
-                        setSeletedDateTimeListHandler={this.props.setSeletedDateTimeListHandler}
-                        masterGid={this.props.masterGid}
-                        setSelectedDate_timeList={this.props.setSelectedDate_timeList}
-                        fetchTime={this.props.fetchTime}/> */}
                 </div>
                 <TimeSelection
-                    // selectedDate={this.state.selectedDate}
-                    // isFetchingTime={this.props.isFetchingTime}
-                    // datetime_string={this.props.datetime_string}
                     selectedDate_timeList={this.state.timeList}
                     no_res={!this.state.dateList.length}
-                    // onSelectClassTimeHandler={this.props.onSelectClassTimeHandler}
                     makeReservation={this.props.makeReservation}
                 />
             </div>

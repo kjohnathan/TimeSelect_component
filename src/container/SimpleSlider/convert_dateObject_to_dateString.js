@@ -1,9 +1,4 @@
 const convert_dateObject_to_dateString = (dateObject) => {
-    console.log(dateObject);
-    console.log(dateObject.getFullYear());
-    console.log(dateObject.getMonth() + 1);
-    console.log(dateObject.getDate());
-    console.log(Boolean(dateObject.getMonth() + 1 > 10));
     const year_string = `${dateObject.getFullYear()}`;
 
     const month_string = (
